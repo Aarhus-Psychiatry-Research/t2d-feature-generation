@@ -261,6 +261,7 @@ class FeatureSpecifier:
         """Get a spec set."""
 
         if self.min_set_for_debug:
+            log.warn("––– !!! Using the minimum set of features for debugging !!! –––"")
             return self._get_metadata_specs() + self._get_temporal_predictor_specs()
 
         return (

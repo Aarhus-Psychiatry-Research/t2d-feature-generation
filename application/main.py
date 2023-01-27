@@ -37,7 +37,7 @@ def main():
     """Main function for loading, generating and evaluating a flattened
     dataset."""
     feature_specs = FeatureSpecifier(
-        project_info=project_info, min_set_for_debug=True # Remember to set to False when generating full dataset
+        project_info=project_info, min_set_for_debug=False # Remember to set to False when generating full dataset
     ).get_feature_specs()
 
     flattened_df = create_flattened_dataset(
