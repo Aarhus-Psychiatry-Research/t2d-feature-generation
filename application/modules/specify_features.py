@@ -3,8 +3,8 @@ import logging
 from sys import prefix
 
 import numpy as np
-
 from psycop_feature_generation.application_modules.project_setup import ProjectInfo
+
 from timeseriesflattener.feature_spec_objects import (
     BaseModel,
     OutcomeGroupSpec,
@@ -261,7 +261,7 @@ class FeatureSpecifier:
         """Get a spec set."""
 
         if self.min_set_for_debug:
-            log.warn("––– !!! Using the minimum set of features for debugging !!! –––"")
+            log.warn("––– !!! Using the minimum set of features for debugging !!! –––")
             return self._get_metadata_specs() + self._get_temporal_predictor_specs()
 
         return (
