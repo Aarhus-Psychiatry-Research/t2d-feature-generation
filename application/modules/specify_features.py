@@ -224,7 +224,7 @@ class FeatureSpecifier:
                 )
             ]
 
-        resolve_multiple = ["max", "min", "mean", "latest", "count"]
+        resolve_multiple = ["max", "min", "mean", "latest"]
         interval_days = [30, 90, 180, 365, 730]
         allowed_nan_value_prop = [0]
 
