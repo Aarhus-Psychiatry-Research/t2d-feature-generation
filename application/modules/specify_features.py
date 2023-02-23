@@ -81,15 +81,17 @@ class FeatureSpecifier:
         log.info("–––––––– Generating outcome specs ––––––––")
 
         if self.min_set_for_debug:
-            return OutcomeSpec(
-                values_loader="t2d",
-                lookahead_days=365,
-                resolve_multiple_fn="max",
-                fallback=0,
-                incident=True,
-                allowed_nan_value_prop=0,
-                prefix=self.project_info.prefix.outcome,
-            )
+            return [
+                OutcomeSpec(
+                    values_loader="t2d",
+                    lookahead_days=365,
+                    resolve_multiple_fn="max",
+                    fallback=0,
+                    incident=True,
+                    allowed_nan_value_prop=0,
+                    prefix=self.project_info.prefix.outcome,
+                )
+            ]
 
         return OutcomeGroupSpec(
             values_loader=["t2d"],
