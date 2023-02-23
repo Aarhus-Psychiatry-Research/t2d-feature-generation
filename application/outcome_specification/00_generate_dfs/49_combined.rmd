@@ -11,7 +11,7 @@ df_first_diabetes_any <- df_first_t2d_blood_sample %>%
   rename(df_first_t2d_blood_sample = datotid_start) %>% # Add BS
   left_join(df_first_date_of_t2d_medication_prescription) %>% 
   left_join(df_first_t2d_diagnoses_combined) %>% 
-  mutate(datotid_first_diabetes_any = pmin(datotid_first_t2d_medication, datotid_first_t2d_diagnosis, df_first_t2d_blood_sample)) %>% 
+  mutate(datotid_first_diabetes_any = pmin(datotid_first_t2d_medication, datotid_first_t2d_diagnosis, df_first_t2d_blood_sample, na.rm = TRUE)) %>% 
   group_by(dw_ek_borger) %>% 
   filter(datotid_first_diabetes_any == min(datotid_first_diabetes_any)) %>% # Make sure to only have one record per patient
   select(dw_ek_borger, datotid_first_diabetes_any) %>% 
