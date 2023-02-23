@@ -4,6 +4,9 @@ from sys import prefix
 
 import numpy as np
 from psycop_feature_generation.application_modules.project_setup import ProjectInfo
+from psycop_feature_generation.loaders.raw.load_t2d_outcomes import (  # noqa pylint: disable=unused-import
+    t2d,
+)
 
 from timeseriesflattener.feature_spec_objects import (
     BaseModel,
@@ -76,6 +79,17 @@ class FeatureSpecifier:
     def _get_outcome_specs(self):
         """Get outcome specs."""
         log.info("–––––––– Generating outcome specs ––––––––")
+
+        if self.min_set_for_debug:
+            return OutcomeSpec(
+                values_loader="t2d",
+                lookahead_days=365,
+                resolve_multiple_fn="max",
+                fallback=0,
+                incident=True,
+                allowed_nan_value_prop=0,
+                prefix=self.project_info.prefix.outcome,
+            )
 
         return OutcomeGroupSpec(
             values_loader=["t2d"],
@@ -216,7 +230,7 @@ class FeatureSpecifier:
             return [
                 PredictorSpec(
                     values_loader="hba1c",
-                    lookbehind_days=30,
+                    lookbehind_days=9999,
                     resolve_multiple_fn="max",
                     fallback=np.nan,
                     allowed_nan_value_prop=0,
@@ -262,7 +276,7 @@ class FeatureSpecifier:
 
         if self.min_set_for_debug:
             log.warn("––– !!! Using the minimum set of features for debugging !!! –––")
-            return self._get_metadata_specs() + self._get_temporal_predictor_specs()
+            return self._get_temporal_predictor_specs() + self._get_outcome_specs()
 
         return (
             self._get_temporal_predictor_specs()
