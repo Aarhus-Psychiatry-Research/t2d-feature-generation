@@ -1,4 +1,5 @@
-from typing import Any, Callable, Iterable, List, Literal, Tuple, Union
+from sys import prefix
+from typing import Any, Callable, Iterable, List, Literal, Optional, Tuple, Union
 
 import pandas as pd
 import psutil
@@ -51,18 +52,19 @@ def quarantine_df_loader() -> pd.DataFrame:
     return df
 
 
-class LoaderParams(BaseParameters):
+class PredictorLoaderParams(BaseParameters):
     project_info: ProjectInfo
     values_loader: List[str]
     lookbehind_days: List[Union[int, float]]
     resolve_multiple_fn: List[str]
     fallback: List[Any]
     allowed_nan_value_prop: List[float]
+    prefix: Optional[str] = None
 
 
 @step
 def load_and_flatten_predictors(
-    params: LoaderParams,
+    params: PredictorLoaderParams,
     prediction_times: pd.DataFrame,
 ) -> pd.DataFrame:
     specs = PredictorGroupSpec(
@@ -71,6 +73,68 @@ def load_and_flatten_predictors(
         resolve_multiple_fn=params.resolve_multiple_fn,
         fallback=params.fallback,
         allowed_nan_value_prop=params.allowed_nan_value_prop,
+        prefix=params.prefix,
+    ).create_combinations()
+
+    flattened_df = flatten_from_specs(
+        specs=specs, prediction_times=prediction_times, project_info=params.project_info
+    )
+    return flattened_df
+
+
+class StaticLoaderParams(BaseParameters):
+    project_info: ProjectInfo
+
+
+@step
+def load_and_flatten_static_specs(
+    params: StaticLoaderParams,
+    prediction_times: pd.DataFrame,
+) -> pd.DataFrame:
+    specs = [
+        StaticSpec(
+            values_loader="t2d",
+            input_col_name_override="timestamp",
+            output_col_name_override="timestamp_first_t2d_hba1c",
+            prefix="",
+        ),
+        StaticSpec(
+            values_loader="timestamp_exclusion",
+            input_col_name_override="timestamp",
+            output_col_name_override="timestamp_exclusion",
+            prefix="",
+        ),
+    ]
+
+    flattened_df = flatten_from_specs(
+        specs=specs, prediction_times=prediction_times, project_info=params.project_info
+    )
+    return flattened_df
+
+
+class OutcomeLoaderParams(BaseParameters):
+    project_info: ProjectInfo
+    values_loader: List[str]
+    lookahead_days: List[Union[int, float]]
+    resolve_multiple_fn: List[str]
+    fallback: List[Any]
+    incident: List[bool]
+    allowed_nan_value_prop: List[float]
+
+
+@step
+def load_and_flatten_outcome_specs(
+    params: StaticLoaderParams,
+    prediction_times: pd.DataFrame,
+) -> pd.DataFrame:
+    specs = OutcomeGroupSpec(
+        values_loader=params.values_loader,
+        lookahead_days=params.lookahead_days,
+        resolve_multiple_fn=params.resolve_multiple_fn,
+        fallback=params.fallback,
+        incident=params.incident,
+        allowed_nan_value_prop=params.allowed_nan_value_prop,
+        prefix=params.project_info.prefix.outcome,
     ).create_combinations()
 
     flattened_df = flatten_from_specs(
