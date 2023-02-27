@@ -29,69 +29,41 @@ from psycop_feature_generation.loaders.raw.load_visits import (
 )
 from steps.somatic_loaders import (
     LoaderParams,
-    load_and_flatten_somatic_medications,
+    PredTimeParams,
+    load_and_flatten_predictors,
     prediction_times_loader,
     quarantine_df_loader,
 )
 from zenml.pipelines import pipeline
 
+from timeseriesflattener import resolve_multiple_functions
+
 log = logging.getLogger()
-import pandas as pd
-
-
-@wandb_alert_on_exception
-def main():
-    """Main function for loading, generating and evaluating a flattened
-    dataset."""
-
-    feature_specs = FeatureSpecifier(
-        project_info=project_info,
-        min_set_for_debug=False,  # Remember to set to False when generating full dataset
-    ).get_feature_specs()
-
-    flattened_df = create_flattened_dataset(
-        feature_specs=feature_specs,
-        prediction_times_df=physical_visits_to_psychiatry(timestamps_only=True),
-        drop_pred_times_with_insufficient_look_distance=False,
-        project_info=project_info,
-        quarantine_df=load_move_into_rm_for_exclusion(),
-        quarantine_days=720,
-    )
-
-    split_and_save_dataset_to_disk(
-        flattened_df=flattened_df,
-        project_info=project_info,
-    )
-
-    save_flattened_dataset_description_to_disk(
-        project_info=project_info,
-        feature_specs=feature_specs,
-    )
 
 @pipeline(enable_cache=True)
 def main_pipeline(
     prediction_times_loader: Callable,
     quarantine_df_loader: Callable,
     load_and_flatten_somatic_medications: Callable,
-    # load_and_flatten_somatic_diagnoses: Callable,
-    # load_and_flatten_somatic_lab_results: Callable,
-    # load_and_flatten_psychiatric_medications: Callable,
-    # load_and_flatten_psychiatric_diagnoses: Callable,
-    # load_and_flatten_psychiatric_lab_results: Callable,
-    # split_and_save_dataset_to_disk: Callable,
-    # save_flattened_dataset_description_to_disk: Callable,
+    load_and_flatten_somatic_diagnoses: Callable,
+    load_and_flatten_somatic_lab_results: Callable,
+    load_and_flatten_psychiatric_medications: Callable,
+    load_and_flatten_psychiatric_diagnoses: Callable,
+    load_and_flatten_psychiatric_lab_results: Callable,
+    split_and_save_dataset_to_disk: Callable,
+    save_flattened_dataset_description_to_disk: Callable,
 ):
-    prediction_times = prediction_times_loader()
     quarantine_df = quarantine_df_loader()
+    prediction_times = prediction_times_loader(quarantine_df=quarantine_df)
 
     features = [
-        load_and_flatten_somatic_medications(prediction_times=prediction_times, quarantine_df=quarantine_df),
-        # load_and_flatten_somatic_diagnoses(prediction_times=prediction_times, quarantine_df=quarantine_df),
-        # load_and_flatten_somatic_lab_results(prediction_times=prediction_times, quarantine_df=quarantine_df),
-        # load_and_flatten_psychiatric_medications(prediction_times=prediction_times, quarantine_df=quarantine_df),
-        # load_and_flatten_psychiatric_diagnoses(prediction_times=prediction_times, quarantine_df=quarantine_df),
-        # load_and_flatten_psychiatric_lab_results(prediction_times=prediction_times, quarantine_df=quarantine_df),
-        # load_and_flatten_metadata(prediction_times=prediction_times, quarantine_df=quarantine_df),
+        load_and_flatten_somatic_medications(prediction_times=prediction_times),
+        # load_and_flatten_somatic_diagnoses(prediction_times=prediction_times),
+        # load_and_flatten_somatic_lab_results(prediction_times=prediction_times),
+        # load_and_flatten_psychiatric_medications(prediction_times=prediction_times),
+        # load_and_flatten_psychiatric_diagnoses(prediction_times=prediction_times),
+        # load_and_flatten_psychiatric_lab_results(prediction_times=prediction_times),
+        # load_and_flatten_metadata(prediction_times=prediction_times),
     ]
 
     # Concatenate all the datasets
@@ -127,24 +99,62 @@ if __name__ == "__main__":
     #     project_info=project_info,
     # )
     
+    lookbehind_days = [30, 90, 180, 365, 730]
     resolve_multiple = ["max", "min", "mean", "latest"]
-    interval_days = [30, 90, 180, 365, 730]
+    
+    
     allowed_nan_value_prop = [0]
-
-    loader_params = LoaderParams(
-            values_loader=["gerd_drugs", "statins", "antihypertensives", "diuretics"], 
-            project_info=project_info,
-            interval_days=interval_days,
-            resolve_multiple=resolve_multiple,
-            fallback=["NaN"],
-            allowed_nan_value_prop=[0],
-            quarantine_days=730,
-        )
-
+    
+    loader_params = {"somatic": {
+                            "medications": LoaderParams(
+                                project_info=project_info,
+                                values_loader=["gerd_drugs", "statins", "antihypertensives", "diuretics"],
+                                lookbehind_days=lookbehind_days,
+                                resolve_multiple_fn=resolve_multiple,
+                                fallback=[np.nan],
+                                allowed_nan_value_prop=allowed_nan_value_prop,
+                            ), 
+                            "diagnoses": LoaderParams(
+                                project_info=project_info,
+                                values_loader=[
+                                    "essential_hypertension",
+                                    "hyperlipidemia",
+                                    "polycystic_ovarian_syndrome",
+                                    "sleep_apnea",
+                                    "gerd",
+                                ],
+                                lookbehind_days=lookbehind_days,
+                                resolve_multiple_fn=resolve_multiple,
+                                fallback=[0],
+                                allowed_nan_value_prop=allowed_nan_value_prop,
+                            ),
+                            "lab_results": LoaderParams(
+                                project_info=project_info,
+                                values_loader=[
+                                    "alat",
+                                    "hdl",
+                                    "ldl",
+                                    "triglycerides",
+                                    "fasting_ldl",
+                                    "crp",
+                                ],
+                                lookbehind_days=lookbehind_days,
+                                resolve_multiple_fn=resolve_multiple,
+                                fallback=[np.nan],
+                                allowed_nan_value_prop=allowed_nan_value_prop,
+                            )
+                        },
+                    }
+    
     main_pipeline_instance = main_pipeline(
-        prediction_times_loader=prediction_times_loader(),
         quarantine_df_loader=quarantine_df_loader(),
-        load_and_flatten_somatic_medications=load_and_flatten_somatic_medications(params=loader_params),
+        prediction_times_loader=prediction_times_loader(params=PredTimeParams(quarantine_days=730, project_info=project_info)),
+        load_and_flatten_somatic_medications=load_and_flatten_predictors(params=loader_params["somatic"]["medications"]),
+        load_and_flatten_somatic_diagnoses=load_and_flatten_predictors(params=loader_params["somatic"]["diagnoses"]),
+        load_and_flatten_somatic_lab_results=load_and_flatten_predictors(params=loader_params["somatic"]["lab_results"]),
+        load_and_flatten_psychiatric_medications=load_and_flatten_predictors(params=loader_params["psychiatric"]["medications"]),
+        load_and_flatten_psychiatric_diagnoses=load_and_flatten_predictors(params=loader_params["psychiatric"]["diagnoses"]),
+        load_and_flatten_psychiatric_lab_results=load_and_flatten_predictors(params=loader_params["psychiatric"]["lab_results"]),
     )
     
     main_pipeline_instance.run(unlisted=True)
