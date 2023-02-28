@@ -17,6 +17,7 @@ from zenml.steps import BaseParameters, step
 
 from timeseriesflattener.feature_cache.cache_to_disk import DiskCache
 from timeseriesflattener.feature_spec_objects import (
+    OutcomeGroupSpec,
     PredictorGroupSpec,
     StaticSpec,
     TemporalSpec,
@@ -26,7 +27,7 @@ from timeseriesflattener.flattened_dataset import TimeseriesFlattener
 
 class PredTimeParams(BaseParameters):
     quarantine_days: int
-    project_info: ProjectInfo
+    id_col_name: str
 
 
 @step
@@ -52,14 +53,20 @@ def quarantine_df_loader() -> pd.DataFrame:
     return df
 
 
+class FlattenFromParamsConf(BaseParameters):
+    predictor_prefix: str = "pred"
+    outcome_prefix: str = "outc"
+    timestamp_col_name: str = "timestamp"
+    id_col_name: str = "dw_ek_borger"
+
+
 class PredictorLoaderParams(BaseParameters):
-    project_info: ProjectInfo
     values_loader: List[str]
     lookbehind_days: List[Union[int, float]]
     resolve_multiple_fn: List[str]
     fallback: List[Any]
     allowed_nan_value_prop: List[float]
-    prefix: Optional[str] = None
+    flatten_from_params_config: FlattenFromParamsConf
 
 
 @step
@@ -77,7 +84,12 @@ def load_and_flatten_predictors(
     ).create_combinations()
 
     flattened_df = flatten_from_specs(
-        specs=specs, prediction_times=prediction_times, project_info=params.project_info
+        specs=specs,
+        prediction_times=prediction_times,
+        predictor_prefix=params.predictor_prefix,
+        outcome_prefix=params.outcome_prefix,
+        timestamp_col_name=params.timestamp_col_name,
+        entity_id_col_name=params.entity_id_col_name,
     )
     return flattened_df
 
@@ -123,8 +135,8 @@ class OutcomeLoaderParams(BaseParameters):
 
 
 @step
-def load_and_flatten_outcome_specs(
-    params: StaticLoaderParams,
+def load_and_flatten_outcomes(
+    params: OutcomeLoaderParams,
     prediction_times: pd.DataFrame,
 ) -> pd.DataFrame:
     specs = OutcomeGroupSpec(
@@ -146,7 +158,10 @@ def load_and_flatten_outcome_specs(
 def flatten_from_specs(
     specs: List[Union[StaticSpec, TemporalSpec]],
     prediction_times: pd.DataFrame,
-    project_info: ProjectInfo,
+    predictor_prefix: str,
+    outcome_prefix: str,
+    timestamp_col_name: str,
+    entity_id_col_name: str,
 ):
     flattened_dataset = TimeseriesFlattener(
         prediction_times_df=prediction_times,
@@ -155,10 +170,10 @@ def flatten_from_specs(
             psutil.cpu_count(logical=True),
         ),
         drop_pred_times_with_insufficient_look_distance=False,
-        predictor_col_name_prefix=project_info.prefix.predictor,
-        outcome_col_name_prefix=project_info.prefix.outcome,
-        timestamp_col_name=project_info.col_names.timestamp,
-        entity_id_col_name=project_info.col_names.id,
+        predictor_col_name_prefix=predictor_prefix,
+        outcome_col_name_prefix=outcome_prefix,
+        timestamp_col_name=timestamp_col_name,
+        entity_id_col_name=entity_id_col_name,
     )
 
     flattened_dataset.add_spec(spec=specs)
