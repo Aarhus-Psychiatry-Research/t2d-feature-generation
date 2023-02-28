@@ -35,9 +35,7 @@ def main_pipeline(
     ]
 
     # Check that all indeces match and concat the dataframes
-    assert all([features[0].index.equals(f.index) for f in features])
+    assert all(features[0].index.equals(f.index) for f in features)
     concatenated_df = pd.concat(features, axis=1)
 
     dataset_saver(df=concatenated_df)
-
-    pass
