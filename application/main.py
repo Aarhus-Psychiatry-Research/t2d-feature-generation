@@ -234,7 +234,7 @@ if __name__ == "__main__":
     )
 
     predictor_steps = {
-        pred_name: load_and_flatten_predictors(params=pred_params).configure(
+        pred_name: load_and_flatten_predictors(params=pred_params).configure( # pylint: disable=no-value-for-parameter
             name=pred_name
         )
         for pred_name, pred_params in predictor_params.items()
@@ -243,8 +243,10 @@ if __name__ == "__main__":
     main_pipeline_instance = main_pipeline(
         quarantine_df_loader=quarantine_df_loader(),
         prediction_times_loader=prediction_times_loader(
-            params=PredTimeParams(quarantine_days=730, project_info=project_info)
-        ),
+            params=PredTimeParams(
+                quarantine_days=730, entity_id_col_name="dw_ek_borger"
+            )
+        ), # pylint: disable=no-value-for-parameter
         load_and_flatten_somatic_medications=predictor_steps["somatic_medications"],
         load_and_flatten_somatic_diagnoses=predictor_steps["somatic_diagnoses"],
         load_and_flatten_general_labs=predictor_steps["general_labs"],
@@ -258,8 +260,8 @@ if __name__ == "__main__":
         ],
         load_and_flatten_static_metadata=load_and_flatten_static_specs(
             params=static_params
-        ),
-        load_and_flatten_outcomes=load_and_flatten_outcomes(params=outcome_params),
+        ), # pylint: disable=no-value-for-parameter
+        load_and_flatten_outcomes=load_and_flatten_outcomes(params=outcome_params), # pylint: disable=no-value-for-parameter
         # split_and_save_dataset_to_disk=split_and_save_dataset_to_disk(),
         # save_flattened_dataset_description_to_disk=save_flattened_dataset_description_to_disk(),
     )

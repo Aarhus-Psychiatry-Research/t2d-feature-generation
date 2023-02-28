@@ -13,6 +13,7 @@ from psycop_feature_generation.loaders.raw.load_moves import (
 from psycop_feature_generation.loaders.raw.load_visits import (
     physical_visits_to_psychiatry,
 )
+from pydantic import BaseModel
 from zenml.steps import BaseParameters, step
 
 from timeseriesflattener.feature_cache.cache_to_disk import DiskCache
@@ -27,7 +28,7 @@ from timeseriesflattener.flattened_dataset import TimeseriesFlattener
 
 class PredTimeParams(BaseParameters):
     quarantine_days: int
-    id_col_name: str
+    entity_id_col_name: str
 
 
 @step
@@ -39,7 +40,6 @@ def prediction_times_loader(
 
     df = filter_prediction_times(
         prediction_times_df=df,
-        project_info=params.project_info,
         quarantine_df=quarantine_df,
         quarantine_days=params.quarantine_days,
     )
@@ -57,7 +57,7 @@ class FlattenFromParamsConf(BaseParameters):
     predictor_prefix: str = "pred"
     outcome_prefix: str = "outc"
     timestamp_col_name: str = "timestamp"
-    id_col_name: str = "dw_ek_borger"
+    entity_id_col_name: str = "dw_ek_borger"
 
 
 class PredictorLoaderParams(BaseParameters):
@@ -66,7 +66,7 @@ class PredictorLoaderParams(BaseParameters):
     resolve_multiple_fn: List[str]
     fallback: List[Any]
     allowed_nan_value_prop: List[float]
-    flatten_from_params_config: FlattenFromParamsConf
+    flattening_conf: FlattenFromParamsConf = FlattenFromParamsConf()
 
 
 @step
@@ -80,22 +80,19 @@ def load_and_flatten_predictors(
         resolve_multiple_fn=params.resolve_multiple_fn,
         fallback=params.fallback,
         allowed_nan_value_prop=params.allowed_nan_value_prop,
-        prefix=params.prefix,
+        prefix=params.predictor_prefix,
     ).create_combinations()
 
     flattened_df = flatten_from_specs(
         specs=specs,
         prediction_times=prediction_times,
-        predictor_prefix=params.predictor_prefix,
-        outcome_prefix=params.outcome_prefix,
-        timestamp_col_name=params.timestamp_col_name,
-        entity_id_col_name=params.entity_id_col_name,
+        flattening_conf=params.flattening_conf,
     )
     return flattened_df
 
 
 class StaticLoaderParams(BaseParameters):
-    project_info: ProjectInfo
+    flattening_conf: FlattenFromParamsConf = FlattenFromParamsConf()
 
 
 @step
@@ -119,19 +116,21 @@ def load_and_flatten_static_specs(
     ]
 
     flattened_df = flatten_from_specs(
-        specs=specs, prediction_times=prediction_times, project_info=params.project_info
+        specs=specs,
+        prediction_times=prediction_times,
+        flattening_conf=params.flattening_conf,
     )
     return flattened_df
 
 
 class OutcomeLoaderParams(BaseParameters):
-    project_info: ProjectInfo
     values_loader: List[str]
     lookahead_days: List[Union[int, float]]
     resolve_multiple_fn: List[str]
     fallback: List[Any]
     incident: List[bool]
     allowed_nan_value_prop: List[float]
+    flattening_conf: FlattenFromParamsConf = FlattenFromParamsConf()
 
 
 @step
@@ -146,11 +145,13 @@ def load_and_flatten_outcomes(
         fallback=params.fallback,
         incident=params.incident,
         allowed_nan_value_prop=params.allowed_nan_value_prop,
-        prefix=params.project_info.prefix.outcome,
+        prefix=params.flattening_conf.outcome_prefix,
     ).create_combinations()
 
     flattened_df = flatten_from_specs(
-        specs=specs, prediction_times=prediction_times, project_info=params.project_info
+        specs=specs,
+        prediction_times=prediction_times,
+        flattening_conf=params.flattening_conf,
     )
     return flattened_df
 
@@ -158,10 +159,7 @@ def load_and_flatten_outcomes(
 def flatten_from_specs(
     specs: List[Union[StaticSpec, TemporalSpec]],
     prediction_times: pd.DataFrame,
-    predictor_prefix: str,
-    outcome_prefix: str,
-    timestamp_col_name: str,
-    entity_id_col_name: str,
+    flattening_conf: FlattenFromParamsConf,
 ):
     flattened_dataset = TimeseriesFlattener(
         prediction_times_df=prediction_times,
@@ -170,10 +168,10 @@ def flatten_from_specs(
             psutil.cpu_count(logical=True),
         ),
         drop_pred_times_with_insufficient_look_distance=False,
-        predictor_col_name_prefix=predictor_prefix,
-        outcome_col_name_prefix=outcome_prefix,
-        timestamp_col_name=timestamp_col_name,
-        entity_id_col_name=entity_id_col_name,
+        predictor_col_name_prefix=flattening_conf.predictor_prefix,
+        outcome_col_name_prefix=flattening_conf.outcome_prefix,
+        timestamp_col_name=flattening_conf.timestamp_col_name,
+        entity_id_col_name=flattening_conf.entity_id_col_name,
     )
 
     flattened_dataset.add_spec(spec=specs)
