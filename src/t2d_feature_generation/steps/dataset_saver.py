@@ -8,8 +8,8 @@ from zenml.steps import BaseParameters, step
 
 class DatasetSaverParams(BaseParameters):
     project_info: ProjectInfo
-    
+
+
 @step
 def dataset_saver(params: DatasetSaverParams, df: pd.DataFrame) -> None:
     split_and_save_dataset_to_disk(flattened_df=df, project_info=params.project_info)
-    

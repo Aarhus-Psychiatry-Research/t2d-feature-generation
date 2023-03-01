@@ -11,7 +11,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
 #  or implied. See the License for the specific language governing
 #  permissions and limitations under the License.
-from typing import List, Type, TypeVar
+from typing import List, Optional, Type, TypeVar
 
 from zenml.environment import Environment
 from zenml.post_execution import get_run
@@ -29,8 +29,8 @@ class GatherStepsParameters(BaseParameters):
         output_steps_names: a list of step names
     """
 
-    output_steps_prefix: str = None
-    output_steps_names: List[str] = None
+    output_steps_prefix: Optional[str] = None
+    output_steps_names: Optional[List[str]] = None
 
 
 class OutputParameters(BaseParameters):

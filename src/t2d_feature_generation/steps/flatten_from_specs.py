@@ -2,13 +2,13 @@ from typing import List, Union
 
 import pandas as pd
 import psutil
-from steps.loaders.t2d_loaders import (  # noqa pylint: disable=unused-import
-    timestamp_exclusion,
-)
-from zenml.steps import BaseParameters
-
 from timeseriesflattener.feature_spec_objects import StaticSpec, TemporalSpec
 from timeseriesflattener.flattened_dataset import TimeseriesFlattener
+from zenml.steps import BaseParameters
+
+from t2d_feature_generation.steps.loaders.t2d_loaders import (  # noqa pylint: disable=unused-import
+    timestamp_exclusion,
+)
 
 
 class FlattenFromParamsConf(BaseParameters):
