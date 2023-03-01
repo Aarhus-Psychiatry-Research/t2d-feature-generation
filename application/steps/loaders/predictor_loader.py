@@ -16,6 +16,7 @@ class PredictorLoaderParams(BaseParameters):
     fallback: List[Any]
     allowed_nan_value_prop: List[float]
     flattening_conf: FlattenFromParamsConf = FlattenFromParamsConf()
+    cache_version: str = "0.0.1"
 
 
 class PredictorOutputParameters(OutputParameters):

@@ -9,6 +9,7 @@ def get_predictor_params(eval_prefix: str):
 
     return [
         PredictorLoaderParams(
+            cache_version="0.0.1",
             predictor_group_name="somatic_medications",
             values_loader=[
                 "gerd_drugs",
@@ -22,6 +23,7 @@ def get_predictor_params(eval_prefix: str):
             allowed_nan_value_prop=allowed_nan_value_prop,
         ),
         PredictorLoaderParams(
+            cache_version="0.0.1",
             predictor_group_name="somatic_diagnoses",
             values_loader=[
                 "essential_hypertension",
@@ -36,6 +38,7 @@ def get_predictor_params(eval_prefix: str):
             allowed_nan_value_prop=allowed_nan_value_prop,
         ),
         PredictorLoaderParams(
+            cache_version="0.0.1",
             predictor_group_name="general_labs",
             values_loader=[
                 "alat",
@@ -51,6 +54,7 @@ def get_predictor_params(eval_prefix: str):
             allowed_nan_value_prop=allowed_nan_value_prop,
         ),
         PredictorLoaderParams(
+            cache_version="0.0.1",
             predictor_group_name="diabetes_labs",
             values_loader=[
                 "hba1c",
@@ -65,6 +69,7 @@ def get_predictor_params(eval_prefix: str):
             allowed_nan_value_prop=allowed_nan_value_prop,
         ),
         PredictorLoaderParams(
+            cache_version="0.0.1",
             predictor_group_name="psychiatric_medications",
             values_loader=[
                 "antipsychotics",
@@ -87,6 +92,7 @@ def get_predictor_params(eval_prefix: str):
             allowed_nan_value_prop=allowed_nan_value_prop,
         ),
         PredictorLoaderParams(
+            cache_version="0.0.1",
             predictor_group_name="psychiatric_diagnoses",
             values_loader=[
                 "f0_disorders",
@@ -106,6 +112,7 @@ def get_predictor_params(eval_prefix: str):
             allowed_nan_value_prop=allowed_nan_value_prop,
         ),
         PredictorLoaderParams(
+            cache_version="0.0.1",
             predictor_group_name="metadata_from_predictors",
             values_loader=["hba1c"],
             fallback=[np.nan],
