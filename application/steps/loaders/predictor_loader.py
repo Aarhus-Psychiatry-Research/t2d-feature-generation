@@ -1,6 +1,7 @@
 from typing import Any, List, Union
 
 import pandas as pd
+from pipelines.dynamic_pipelines.gather_step import OutputParameters
 from steps.flatten_from_specs import FlattenFromParamsConf, flatten_from_specs
 from zenml.steps import BaseParameters, step
 
@@ -8,6 +9,7 @@ from timeseriesflattener.feature_spec_objects import PredictorGroupSpec
 
 
 class PredictorLoaderParams(BaseParameters):
+    predictor_group_name: str
     values_loader: List[str]
     lookbehind_days: List[Union[int, float]]
     resolve_multiple_fn: List[str]
@@ -16,11 +18,18 @@ class PredictorLoaderParams(BaseParameters):
     flattening_conf: FlattenFromParamsConf = FlattenFromParamsConf()
 
 
+class PredictorOutputParameters(OutputParameters):
+    class Config:
+        arbitrary_types_allowed = True
+
+    flattened_df: pd.DataFrame
+
+
 @step
 def load_and_flatten_predictors(
     params: PredictorLoaderParams,
     prediction_times: pd.DataFrame,
-) -> pd.DataFrame:
+) -> PredictorOutputParameters.as_output():
     specs = PredictorGroupSpec(
         values_loader=params.values_loader,
         lookbehind_days=params.lookbehind_days,

@@ -17,6 +17,7 @@ def main_pipeline(
     load_and_flatten_static_metadata: Callable,
     load_and_flatten_outcomes: Callable,
     load_and_flatten_metadata_from_predictor: Callable,
+    feature_concatenator: Callable,
     dataset_saver: Callable,
 ):
     quarantine_df = quarantine_df_loader()
@@ -34,8 +35,6 @@ def main_pipeline(
         load_and_flatten_metadata_from_predictor(prediction_times=prediction_times),
     ]
 
-    # Check that all indeces match and concat the dataframes
-    assert all(features[0].index.equals(f.index) for f in features)
-    concatenated_df = pd.concat(features, axis=1)
+    concatenated_df = feature_concatenator(features=features)
 
     dataset_saver(df=concatenated_df)

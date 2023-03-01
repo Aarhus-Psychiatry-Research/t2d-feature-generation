@@ -2,15 +2,14 @@ import numpy as np
 from steps.loaders.predictor_loader import PredictorLoaderParams
 
 
-def get_predictor_params(
-    project_info, lookbehind_days, resolve_multiple, allowed_nan_value_prop
-):
+def get_predictor_params(eval_prefix: str):
     lookbehind_days = [30, 90, 180, 365, 730]
     resolve_multiple = ["max", "min", "mean", "latest"]
     allowed_nan_value_prop = [0]
 
-    return {
-        "somatic_medications": PredictorLoaderParams(
+    return [
+        PredictorLoaderParams(
+            predictor_group_name="somatic_medications",
             values_loader=[
                 "gerd_drugs",
                 "statins",
@@ -22,7 +21,8 @@ def get_predictor_params(
             fallback=[np.nan],
             allowed_nan_value_prop=allowed_nan_value_prop,
         ),
-        "somatic_diagnoses": PredictorLoaderParams(
+        PredictorLoaderParams(
+            predictor_group_name="somatic_diagnoses",
             values_loader=[
                 "essential_hypertension",
                 "hyperlipidemia",
@@ -35,7 +35,8 @@ def get_predictor_params(
             fallback=[0],
             allowed_nan_value_prop=allowed_nan_value_prop,
         ),
-        "general_labs": PredictorLoaderParams(
+        PredictorLoaderParams(
+            predictor_group_name="general_labs",
             values_loader=[
                 "alat",
                 "hdl",
@@ -49,7 +50,8 @@ def get_predictor_params(
             fallback=[np.nan],
             allowed_nan_value_prop=allowed_nan_value_prop,
         ),
-        "diabetes_labs": PredictorLoaderParams(
+        PredictorLoaderParams(
+            predictor_group_name="diabetes_labs",
             values_loader=[
                 "hba1c",
                 "scheduled_glc",
@@ -62,7 +64,8 @@ def get_predictor_params(
             fallback=[np.nan],
             allowed_nan_value_prop=allowed_nan_value_prop,
         ),
-        "psychiatric_medications": PredictorLoaderParams(
+        PredictorLoaderParams(
+            predictor_group_name="psychiatric_medications",
             values_loader=[
                 "antipsychotics",
                 "clozapine",
@@ -83,7 +86,8 @@ def get_predictor_params(
             fallback=[np.nan],
             allowed_nan_value_prop=allowed_nan_value_prop,
         ),
-        "psychiatric_diagnoses": PredictorLoaderParams(
+        PredictorLoaderParams(
+            predictor_group_name="psychiatric_diagnoses",
             values_loader=[
                 "f0_disorders",
                 "f1_disorders",
@@ -101,12 +105,13 @@ def get_predictor_params(
             fallback=[0],
             allowed_nan_value_prop=allowed_nan_value_prop,
         ),
-        "metadata_from_predictors": PredictorLoaderParams(
+        PredictorLoaderParams(
+            predictor_group_name="metadata_from_predictors",
             values_loader=["hba1c"],
             fallback=[np.nan],
             lookbehind_days=[9999],
             resolve_multiple_fn=["count"],
             allowed_nan_value_prop=allowed_nan_value_prop,
-            prefix=project_info.prefix.eval,
+            prefix=eval_prefix,
         ),
-    }
+    ]
