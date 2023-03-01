@@ -18,7 +18,7 @@ classifiers = [
 
 requires-python = ">=3.8"
 dependencies = [
-    # add you dependencies here (e.g. "numpy>=1.20.0,<1.21.0")
+    "numpy>=1.21.4,<1.22.0",
 ]
 
 [project.license]
