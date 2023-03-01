@@ -1,5 +1,6 @@
 import numpy as np
-from steps.loaders.predictor_loader import PredictorLoaderParams
+
+from t2d_feature_generation.steps.loaders.predictor_loader import PredictorLoaderParams
 
 
 def get_predictor_params(eval_prefix: str):

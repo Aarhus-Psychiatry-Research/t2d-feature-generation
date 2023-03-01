@@ -6,16 +6,27 @@ from pipelines.dynamic_main_pipeline import FeatureGeneration
 from pipelines.main_pipeline import main_pipeline
 from psycop_feature_generation.application_modules.loggers import init_root_logger
 from psycop_feature_generation.application_modules.project_setup import get_project_info
-from steps.concatenators import combined_concatenator, feature_concatenator
-from steps.dataset_saver import DatasetSaverParams, dataset_saver
-from steps.loaders.outcome_loader import OutcomeLoaderParams, load_and_flatten_outcomes
-from steps.loaders.prediction_times_loader import (
+
+from t2d_feature_generation.steps.concatenators import (
+    combined_concatenator,
+    feature_concatenator,
+)
+from t2d_feature_generation.steps.dataset_saver import DatasetSaverParams, dataset_saver
+from t2d_feature_generation.steps.loaders.outcome_loader import (
+    OutcomeLoaderParams,
+    load_and_flatten_outcomes,
+)
+from t2d_feature_generation.steps.loaders.prediction_times_loader import (
     PredTimeParams,
     prediction_times_loader,
 )
-from steps.loaders.predictor_loader import load_and_flatten_predictors
-from steps.loaders.quarantine_df_loader import quarantine_df_loader
-from steps.loaders.static_loader import (
+from t2d_feature_generation.steps.loaders.predictor_loader import (
+    load_and_flatten_predictors,
+)
+from t2d_feature_generation.steps.loaders.quarantine_df_loader import (
+    quarantine_df_loader,
+)
+from t2d_feature_generation.steps.loaders.static_loader import (
     StaticLoaderParams,
     load_and_flatten_static_specs,
 )

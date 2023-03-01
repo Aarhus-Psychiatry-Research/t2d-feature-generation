@@ -77,5 +77,5 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.python-version == '3.9' }}
         shell: bash
         run: |
-          echo "Coverage Report - ${{ steps.coverage-comment.outputs.coverage }}"
-          echo "Coverage Color - ${{ steps.coverage-comment.outputs.color }}"
+          echo "Coverage Report - ${{ t2d_feature_generation.steps.coverage-comment.outputs.coverage }}"
+          echo "Coverage Color - ${{ t2d_feature_generation.steps.coverage-comment.outputs.color }}"
