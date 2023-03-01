@@ -21,6 +21,8 @@ dependencies = [
     "numpy>=1.21.4,<1.25.0",
     "pandas>=1.5.0,<1.6.0",
     "zenml",
+    "timeseriesflattener",
+    "psycop-feature-generation",
 ]
 
 [project.license]
