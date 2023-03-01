@@ -66,7 +66,7 @@ class FeatureGeneration(DynamicPipeline):
             **kwargs
         )
 
-    def connect(self, **kwargs: BaseStep) -> None:
+    def connect(self, **kwargs: BaseStep) -> None:  # pylint: disable=arguments-differ
         """
         The method connects the input and outputs of the hyperparameter tuning pipeline.
 

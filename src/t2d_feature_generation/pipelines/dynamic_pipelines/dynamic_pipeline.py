@@ -42,7 +42,9 @@ class DynamicPipeline(BasePipeline):
         type(self).STEP_SPEC = {s.name: type(s) for s in steps}
         super().__init__(*steps, **kwargs)
 
-    def connect(self, *args: BaseStep, **kwargs: BaseStep) -> None:
+    def connect(  # pylint: disable=useless-parent-delegation
+        self, *args: BaseStep, **kwargs: BaseStep
+    ) -> None:
         super().connect(*args, **kwargs)
 
     @classmethod

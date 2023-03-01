@@ -17,8 +17,6 @@ log = logging.getLogger(__name__)
 class ConcatenatorParams(GatherStepsParameters):
     """Parameters for the concatenator step."""
 
-    pass
-
 
 def validate_indeces_match_and_concat(dfs):
     log.info(f"Validating indices for {len(dfs)} dataframes.")

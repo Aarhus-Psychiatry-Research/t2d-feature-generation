@@ -6,7 +6,6 @@ from psycop_feature_generation.application_modules.loggers import init_root_logg
 from psycop_feature_generation.application_modules.project_setup import get_project_info
 
 from t2d_feature_generation.pipelines.dynamic_main_pipeline import FeatureGeneration
-from t2d_feature_generation.pipelines.main_pipeline import main_pipeline
 from t2d_feature_generation.steps.concatenators import (
     combined_concatenator,
     feature_concatenator,
