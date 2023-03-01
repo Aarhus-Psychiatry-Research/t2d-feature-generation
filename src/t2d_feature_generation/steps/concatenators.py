@@ -2,9 +2,14 @@ import logging
 from typing import List
 
 import pandas as pd
-from pipelines.dynamic_pipelines.gather_step import GatherStepsParameters
-from steps.loaders.predictor_loader import PredictorOutputParameters
 from zenml.steps import step
+
+from t2d_feature_generation.pipelines.dynamic_pipelines.gather_step import (
+    GatherStepsParameters,
+)
+from t2d_feature_generation.steps.loaders.predictor_loader import (
+    PredictorOutputParameters,
+)
 
 log = logging.getLogger(__name__)
 
