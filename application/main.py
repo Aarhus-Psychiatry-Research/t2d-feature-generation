@@ -1,12 +1,12 @@
 """Main feature generation."""
 import logging
 
-from get_predictor_params import get_predictor_params
-from pipelines.dynamic_main_pipeline import FeatureGeneration
-from pipelines.main_pipeline import main_pipeline
+from modules.get_predictor_params import get_predictor_params
 from psycop_feature_generation.application_modules.loggers import init_root_logger
 from psycop_feature_generation.application_modules.project_setup import get_project_info
 
+from t2d_feature_generation.pipelines.dynamic_main_pipeline import FeatureGeneration
+from t2d_feature_generation.pipelines.main_pipeline import main_pipeline
 from t2d_feature_generation.steps.concatenators import (
     combined_concatenator,
     feature_concatenator,
