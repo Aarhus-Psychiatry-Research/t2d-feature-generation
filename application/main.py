@@ -91,4 +91,7 @@ if __name__ == "__main__":
         ),
         predictor_confs=predictor_params,
         feature_concatenator=feature_concatenator,
+        dataset_saver=dataset_saver(
+            params=DatasetSaverParams(project_info=project_info)
+        ),
     ).run(unlisted=True)

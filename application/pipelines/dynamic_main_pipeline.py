@@ -2,6 +2,7 @@ from itertools import chain
 from typing import List
 
 from pipelines.dynamic_pipelines.dynamic_pipeline import DynamicPipeline
+from steps.dataset_saver import dataset_saver
 from steps.feature_concatenator import ConcatenatorParams
 from steps.loaders.predictor_loader import (
     PredictorLoaderParams,
@@ -20,6 +21,7 @@ class FeatureGeneration(DynamicPipeline):
         prediction_time_loader: BaseStep,
         predictor_confs: List[PredictorLoaderParams],
         feature_concatenator: BaseStep,
+        dataset_saver: BaseStep,
         **kwargs
     ) -> None:
         """
@@ -29,19 +31,25 @@ class FeatureGeneration(DynamicPipeline):
         self.prediction_time_loader = prediction_time_loader
 
         self.predictor_loading_steps = [
-            [load_and_flatten_predictors(params=pred_params).configure(
-                name=pred_params.predictor_group_name
-            )]
+            [
+                load_and_flatten_predictors(params=pred_params).configure(
+                    name=pred_params.predictor_group_name
+                )
+            ]
             for pred_params in predictor_confs
         ]
-        
+
         output_step_names = [step[-1].name for step in self.predictor_loading_steps]
-        self.feature_concatenator = feature_concatenator(params=ConcatenatorParams(output_steps_names=output_step_names))
+        self.feature_concatenator = feature_concatenator(
+            params=ConcatenatorParams(output_steps_names=output_step_names)
+        )
+        self.dataset_saver = dataset_saver
 
         super().__init__(
             self.quarantine_df_loader,
             self.prediction_time_loader,
             self.feature_concatenator,
+            self.dataset_saver,
             *chain.from_iterable(self.predictor_loading_steps),
             **kwargs
         )
@@ -55,11 +63,12 @@ class FeatureGeneration(DynamicPipeline):
         """
         quarantine_df = self.quarantine_df_loader()
         prediction_times = self.prediction_time_loader(quarantine_df=quarantine_df)
-        
+
         for predictor_step in self.predictor_loading_steps:
             step = predictor_step[0]
             step(prediction_times=prediction_times)
             self.feature_concatenator.after(step)
-        
+
         concatenated_predictors = self.feature_concatenator()
-        
+
+        self.dataset_saver(df=concatenated_predictors)
