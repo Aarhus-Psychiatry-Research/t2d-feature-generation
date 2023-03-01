@@ -2,8 +2,8 @@ from itertools import chain
 from typing import List
 
 from pipelines.dynamic_pipelines.dynamic_pipeline import DynamicPipeline
+from steps.concatenators import ConcatenatorParams
 from steps.dataset_saver import dataset_saver
-from steps.feature_concatenator import ConcatenatorParams
 from steps.loaders.predictor_loader import (
     PredictorLoaderParams,
     load_and_flatten_predictors,
@@ -20,7 +20,10 @@ class FeatureGeneration(DynamicPipeline):
         quarantine_df_loader: BaseStep,
         prediction_time_loader: BaseStep,
         predictor_confs: List[PredictorLoaderParams],
-        feature_concatenator: BaseStep,
+        predictor_concatenator: BaseStep,
+        outcome_loader: BaseStep,
+        static_loader: BaseStep,
+        combined_concatenator: BaseStep,
         dataset_saver: BaseStep,
         **kwargs
     ) -> None:
@@ -38,17 +41,23 @@ class FeatureGeneration(DynamicPipeline):
             ]
             for pred_params in predictor_confs
         ]
-
-        output_step_names = [step[-1].name for step in self.predictor_loading_steps]
-        self.feature_concatenator = feature_concatenator(
-            params=ConcatenatorParams(output_steps_names=output_step_names)
+        predictor_step_names = [step[-1].name for step in self.predictor_loading_steps]
+        self.predictor_concatenator = predictor_concatenator(
+            params=ConcatenatorParams(output_steps_names=predictor_step_names)
         )
+
+        self.outcome_loader = outcome_loader
+        self.static_loader = static_loader
+        self.combined_concatenator = combined_concatenator
         self.dataset_saver = dataset_saver
 
         super().__init__(
             self.quarantine_df_loader,
             self.prediction_time_loader,
-            self.feature_concatenator,
+            self.predictor_concatenator,
+            self.outcome_loader,
+            self.static_loader,
+            self.combined_concatenator,
             self.dataset_saver,
             *chain.from_iterable(self.predictor_loading_steps),
             **kwargs
@@ -67,8 +76,15 @@ class FeatureGeneration(DynamicPipeline):
         for predictor_step in self.predictor_loading_steps:
             step = predictor_step[0]
             step(prediction_times=prediction_times)
-            self.feature_concatenator.after(step)
+            self.predictor_concatenator.after(step)
 
-        concatenated_predictors = self.feature_concatenator()
+        concatenated_predictors = self.predictor_concatenator()
 
-        self.dataset_saver(df=concatenated_predictors)
+        outcomes = self.outcome_loader(prediction_times=prediction_times)
+        statics = self.static_loader(prediction_times=prediction_times)
+
+        combined = self.combined_concatenator(
+            outcomes=outcomes, statics=statics, predictors=concatenated_predictors
+        )
+
+        self.dataset_saver(df=combined)
