@@ -39,14 +39,14 @@ class FeatureGeneration(DynamicPipeline):
         self.predictor_loading_steps = [
             [
                 load_and_flatten_predictors(params=pred_params).configure(
-                    name=pred_params.predictor_group_name
-                )
+                    name=pred_params.predictor_group_name,
+                ),
             ]
             for pred_params in predictor_confs
         ]
         predictor_step_names = [step[-1].name for step in self.predictor_loading_steps]
         self.predictor_concatenator = predictor_concatenator(
-            params=ConcatenatorParams(output_steps_names=predictor_step_names)
+            params=ConcatenatorParams(output_steps_names=predictor_step_names),
         )
 
         self.outcome_loader = outcome_loader
@@ -76,7 +76,7 @@ class FeatureGeneration(DynamicPipeline):
         quarantine_df = self.quarantine_df_loader()
         prediction_times = self.prediction_time_loader(quarantine_df=quarantine_df)
         outcomes, prediction_times_filtered_by_outcome = self.outcome_loader(
-            prediction_times=prediction_times
+            prediction_times=prediction_times,
         )
 
         for predictor_step in self.predictor_loading_steps:
@@ -86,12 +86,14 @@ class FeatureGeneration(DynamicPipeline):
 
         concatenated_predictors = self.predictor_concatenator()
 
-        statics = self.static_loader(
-            prediction_times=prediction_times_filtered_by_outcome
+        statistics = self.static_loader(
+            prediction_times=prediction_times_filtered_by_outcome,
         )
 
         combined = self.combined_concatenator(
-            outcomes=outcomes, statics=statics, predictors=concatenated_predictors
+            outcomes=outcomes,
+            statistics=statistics,
+            predictors=concatenated_predictors,
         )
 
         self.dataset_saver(df=combined)

@@ -2,9 +2,8 @@ from typing import Any, List, Union
 
 import pandas as pd
 from steps.flatten_from_specs import FlattenFromParamsConf, flatten_from_specs
-from zenml.steps import BaseParameters, Output, step
-
 from timeseriesflattener.feature_spec_objects import OutcomeGroupSpec
+from zenml.steps import BaseParameters, Output, step
 
 
 class OutcomeLoaderParams(BaseParameters):

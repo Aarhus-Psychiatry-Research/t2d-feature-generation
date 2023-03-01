@@ -37,7 +37,7 @@ class DynamicPipeline(BasePipeline):
                 f"A dynamic pipeline {self.__class__.__name__} was already "
                 f"initialized. Consider generating new pipelines based on "
                 f"this template with "
-                f"{self.__class__.__name__}.{self.as_template_of.__name__}()"
+                f"{self.__class__.__name__}.{self.as_template_of.__name__}()",
             )
         type(self).STEP_SPEC = {s.name: type(s) for s in steps}
         super().__init__(*steps, **kwargs)

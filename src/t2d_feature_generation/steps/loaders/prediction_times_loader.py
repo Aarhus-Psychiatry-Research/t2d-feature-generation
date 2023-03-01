@@ -15,7 +15,8 @@ class PredTimeParams(BaseParameters):
 
 @step
 def prediction_times_loader(
-    params: PredTimeParams, quarantine_df: pd.DataFrame
+    params: PredTimeParams,
+    quarantine_df: pd.DataFrame,
 ) -> pd.DataFrame:
     """Loader for prediction times."""
     df = physical_visits_to_psychiatry(timestamps_only=True)

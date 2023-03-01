@@ -1,8 +1,7 @@
 import pandas as pd
 from steps.flatten_from_specs import FlattenFromParamsConf, flatten_from_specs
-from zenml.steps import BaseParameters, step
-
 from timeseriesflattener.feature_spec_objects import StaticSpec
+from zenml.steps import BaseParameters, step
 
 
 class StaticLoaderParams(BaseParameters):

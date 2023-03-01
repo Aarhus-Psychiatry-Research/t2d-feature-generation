@@ -5,10 +5,9 @@ import psutil
 from steps.loaders.t2d_loaders import (  # noqa pylint: disable=unused-import
     timestamp_exclusion,
 )
-from zenml.steps import BaseParameters
-
 from timeseriesflattener.feature_spec_objects import StaticSpec, TemporalSpec
 from timeseriesflattener.flattened_dataset import TimeseriesFlattener
+from zenml.steps import BaseParameters
 
 
 class FlattenFromParamsConf(BaseParameters):

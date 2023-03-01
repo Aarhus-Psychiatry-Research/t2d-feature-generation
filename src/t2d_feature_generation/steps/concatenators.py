@@ -15,22 +15,10 @@ class ConcatenatorParams(GatherStepsParameters):
     pass
 
 
-@step
-def feature_concatenator(params: ConcatenatorParams) -> pd.DataFrame:
-    # Check that all indeces match and concat the dataframes
-    inputs = PredictorOutputParameters.gather(params)
-
-    dfs = [p.flattened_df for p in inputs]
-
-    concatenated_df = validate_indeces_match_and_concat(dfs)
-
-    return concatenated_df
-
-
 def validate_indeces_match_and_concat(dfs):
-    log.info(f"Validating indeces for {len(dfs)} dataframes.")
+    log.info(f"Validating indices for {len(dfs)} dataframes.")
     if not all(dfs[0].index.equals(f.index) for f in dfs):
-        raise ValueError("All features must have the same indeces.")
+        raise ValueError("All features must have the same indices.")
 
     log.info("Concatenating dataframes.")
     dfs_without_shared_cols = [
@@ -46,10 +34,24 @@ def validate_indeces_match_and_concat(dfs):
 
 
 @step
+def feature_concatenator(params: ConcatenatorParams) -> pd.DataFrame:
+    # Check that all indices match and concat the dataframes
+    inputs = PredictorOutputParameters.gather(params)
+
+    dfs = [p.flattened_df for p in inputs]
+
+    concatenated_df = validate_indeces_match_and_concat(dfs)
+
+    return concatenated_df
+
+
+@step
 def combined_concatenator(
-    outcomes: pd.DataFrame, statics: pd.DataFrame, predictors: pd.DataFrame
+    outcomes: pd.DataFrame,
+    statistics: pd.DataFrame,
+    predictors: pd.DataFrame,
 ) -> pd.DataFrame:
-    features = [outcomes, statics, predictors]
+    features = [outcomes, statistics, predictors]
 
     concatenated_df = validate_indeces_match_and_concat(features)
 

@@ -57,15 +57,16 @@ if __name__ == "__main__":
             fallback=[0],
             incident=[True],
             allowed_nan_value_prop=[0],
-        )
+        ),
     )
 
     FeatureGeneration(
         quarantine_df_loader=quarantine_df_loader(),
         prediction_time_loader=prediction_times_loader(
             params=PredTimeParams(
-                quarantine_days=730, entity_id_col_name="dw_ek_borger"
-            )
+                quarantine_days=730,
+                entity_id_col_name="dw_ek_borger",
+            ),
         ),
         predictor_confs=predictor_params,
         predictor_concatenator=feature_concatenator,
@@ -73,6 +74,6 @@ if __name__ == "__main__":
         static_loader=static_loader,
         combined_concatenator=combined_concatenator(),
         dataset_saver=dataset_saver(
-            params=DatasetSaverParams(project_info=project_info)
+            params=DatasetSaverParams(project_info=project_info),
         ),
     ).run(unlisted=True)
