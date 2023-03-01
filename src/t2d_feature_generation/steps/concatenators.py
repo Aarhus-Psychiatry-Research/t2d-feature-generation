@@ -1,5 +1,5 @@
 import logging
-from typing import List
+from typing import Hashable, List, Sequence
 
 import pandas as pd
 from zenml.steps import step
@@ -20,7 +20,11 @@ class ConcatenatorParams(GatherStepsParameters):
 
 def validate_indeces_match_and_concat(
     dfs: List[pd.DataFrame],
-    shared_cols=["dw_ek_borger", "timestamp", "prediction_time_uuid"],
+    shared_cols: Sequence[Hashable] = (
+        "dw_ek_borger",
+        "timestamp",
+        "prediction_time_uuid",
+    ),
 ):
     log.info(f"Validating indices for {len(dfs)} dataframes.")
     if not all(dfs[0].index.equals(f.index) for f in dfs):
