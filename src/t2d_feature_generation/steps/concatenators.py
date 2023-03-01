@@ -18,16 +18,16 @@ class ConcatenatorParams(GatherStepsParameters):
     """Parameters for the concatenator step."""
 
 
-def validate_indeces_match_and_concat(dfs):
+def validate_indeces_match_and_concat(
+    dfs: List[pd.DataFrame],
+    shared_cols=["dw_ek_borger", "timestamp", "prediction_time_uuid"],
+):
     log.info(f"Validating indices for {len(dfs)} dataframes.")
     if not all(dfs[0].index.equals(f.index) for f in dfs):
         raise ValueError("All features must have the same indices.")
 
     log.info("Concatenating dataframes.")
-    dfs_without_shared_cols = [
-        df.drop(columns=["dw_ek_borger", "timestamp", "prediction_time_uuid"])
-        for df in dfs
-    ]
+    dfs_without_shared_cols = [df.drop(columns=shared_cols) for df in dfs]
 
     dfs_to_concat = dfs_without_shared_cols[1:] + [dfs[0]]
 
