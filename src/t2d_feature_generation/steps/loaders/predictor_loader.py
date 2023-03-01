@@ -1,10 +1,16 @@
 from typing import Any, List, Union
 
 import pandas as pd
-from pipelines.dynamic_pipelines.gather_step import OutputParameters
-from steps.flatten_from_specs import FlattenFromParamsConf, flatten_from_specs
 from timeseriesflattener.feature_spec_objects import PredictorGroupSpec
 from zenml.steps import BaseParameters, step
+
+from t2d_feature_generation.pipelines.dynamic_pipelines.gather_step import (
+    OutputParameters,
+)
+from t2d_feature_generation.steps.flatten_from_specs import (
+    FlattenFromParamsConf,
+    flatten_from_specs,
+)
 
 
 class PredictorLoaderParams(BaseParameters):
