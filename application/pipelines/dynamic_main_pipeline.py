@@ -72,16 +72,18 @@ class FeatureGeneration(DynamicPipeline):
         """
         quarantine_df = self.quarantine_df_loader()
         prediction_times = self.prediction_time_loader(quarantine_df=quarantine_df)
+        outcomes, prediction_times_filtered_by_outcome = self.outcome_loader(
+            prediction_times=prediction_times
+        )
 
         for predictor_step in self.predictor_loading_steps:
             step = predictor_step[0]
-            step(prediction_times=prediction_times)
+            step(prediction_times=prediction_times_filtered_by_outcome)
             self.predictor_concatenator.after(step)
 
         concatenated_predictors = self.predictor_concatenator()
 
-        outcomes = self.outcome_loader(prediction_times=prediction_times)
-        statics = self.static_loader(prediction_times=prediction_times)
+        statics = self.static_loader(prediction_times=prediction_times_filtered_by_outcome)
 
         combined = self.combined_concatenator(
             outcomes=outcomes, statics=statics, predictors=concatenated_predictors

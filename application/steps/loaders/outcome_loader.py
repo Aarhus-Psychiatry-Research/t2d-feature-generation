@@ -2,7 +2,7 @@ from typing import Any, List, Union
 
 import pandas as pd
 from steps.flatten_from_specs import FlattenFromParamsConf, flatten_from_specs
-from zenml.steps import BaseParameters, step
+from zenml.steps import BaseParameters, Output, step
 
 from timeseriesflattener.feature_spec_objects import OutcomeGroupSpec
 
@@ -21,7 +21,7 @@ class OutcomeLoaderParams(BaseParameters):
 def load_and_flatten_outcomes(
     params: OutcomeLoaderParams,
     prediction_times: pd.DataFrame,
-) -> pd.DataFrame:
+) -> Output(flattened_df=pd.DataFrame, filtered_prediction_times=pd.DataFrame):
     specs = OutcomeGroupSpec(
         values_loader=params.values_loader,
         lookahead_days=params.lookahead_days,
@@ -32,9 +32,14 @@ def load_and_flatten_outcomes(
         prefix=params.flattening_conf.outcome_prefix,
     ).create_combinations()
 
-    flattened_df = flatten_from_specs(
+    flattened_outcomes = flatten_from_specs(
         specs=specs,
         prediction_times=prediction_times,
         flattening_conf=params.flattening_conf,
     )
-    return flattened_df
+
+    filtered_prediction_times = flattened_outcomes[
+        ["dw_ek_borger", "timestamp", "prediction_time_uuid"]
+    ]
+
+    return flattened_outcomes, filtered_prediction_times
