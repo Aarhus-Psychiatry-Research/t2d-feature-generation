@@ -7,7 +7,6 @@ from psycop_feature_generation.application_modules.project_setup import ProjectI
 from psycop_feature_generation.loaders.raw.load_t2d_outcomes import (  # noqa pylint: disable=unused-import
     t2d,
 )
-
 from timeseriesflattener.feature_spec_objects import (
     BaseModel,
     OutcomeGroupSpec,
@@ -288,7 +287,11 @@ class FeatureSpecifier:
 
         if self.min_set_for_debug:
             log.warn("––– !!! Using the minimum set of features for debugging !!! –––")
-            return self._get_temporal_predictor_specs() + self._get_outcome_specs() + self._get_metadata_specs()
+            return (
+                self._get_temporal_predictor_specs()
+                + self._get_outcome_specs()
+                + self._get_metadata_specs()
+            )
 
         return (
             self._get_temporal_predictor_specs()
