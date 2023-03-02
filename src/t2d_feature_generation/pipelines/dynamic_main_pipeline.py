@@ -73,6 +73,7 @@ class FeatureGeneration(DynamicPipeline):
         """
         quarantine_df = self.quarantine_df_loader()
         prediction_times = self.prediction_time_loader(quarantine_df=quarantine_df)
+
         outcomes, prediction_times_filtered_by_outcome = self.outcome_loader(
             prediction_times=prediction_times,
         )
