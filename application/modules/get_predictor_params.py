@@ -120,6 +120,6 @@ def get_predictor_params(eval_prefix: str):
             lookbehind_days=[9999],
             resolve_multiple_fn=["count"],
             allowed_nan_value_prop=allowed_nan_value_prop,
-            flattening_conf=FlattenFromParamsConf(predictor_prefix=eval_prefix)
+            flattening_conf=FlattenFromParamsConf(predictor_prefix=eval_prefix),
         ),
     ]

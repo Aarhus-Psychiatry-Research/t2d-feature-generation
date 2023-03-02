@@ -65,7 +65,8 @@ def flatten_with_age(
 
     if add_age:
         flattened_dataset.add_age(
-            date_of_birth_df=birthdays(), date_of_birth_col_name="date_of_birth"
+            date_of_birth_df=birthdays(),
+            date_of_birth_col_name="date_of_birth",
         )
 
     return flattened_dataset.get_df()

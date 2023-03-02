@@ -4,7 +4,6 @@ from zenml.steps import BaseParameters, step
 
 from t2d_feature_generation.steps.flatten_from_specs import (
     FlattenFromParamsConf,
-    flatten_from_specs,
     flatten_with_age,
 )
 
