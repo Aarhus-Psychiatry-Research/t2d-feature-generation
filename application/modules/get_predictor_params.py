@@ -1,5 +1,4 @@
 import numpy as np
-
 from t2d_feature_generation.steps.loaders.predictor_loader import PredictorLoaderParams
 
 

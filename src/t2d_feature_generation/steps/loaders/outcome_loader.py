@@ -7,7 +7,9 @@ from t2d_feature_generation.steps.flatten_from_specs import (
     FlattenFromParamsConf,
     flatten_from_specs,
 )
-from timeseriesflattener.feature_spec_objects import OutcomeGroupSpec
+from timeseriesflattener.feature_spec_objects import (
+    OutcomeGroupSpec,  # pylint: disable=no-name-in-module
+)
 
 
 class OutcomeLoaderParams(BaseParameters):

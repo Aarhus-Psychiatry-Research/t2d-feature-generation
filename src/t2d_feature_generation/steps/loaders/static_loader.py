@@ -5,7 +5,9 @@ from t2d_feature_generation.steps.flatten_from_specs import (
     FlattenFromParamsConf,
     flatten_from_specs,
 )
-from timeseriesflattener.feature_spec_objects import StaticSpec
+from timeseriesflattener.feature_spec_objects import (
+    StaticSpec,  # pylint: disable=no-name-in-module
+)
 
 
 class StaticLoaderParams(BaseParameters):
