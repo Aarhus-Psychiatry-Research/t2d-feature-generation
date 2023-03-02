@@ -31,7 +31,7 @@ def validate_indeces_match_and_concat(
         raise ValueError("All features must have the same indices.")
 
     log.info("Concatenating dataframes.")
-    dfs_without_shared_cols = [df.drop(columns=shared_cols) for df in dfs]
+    dfs_without_shared_cols = [df.drop(columns=list(shared_cols)) for df in dfs]
 
     dfs_to_concat = dfs_without_shared_cols[1:] + [dfs[0]]
 
