@@ -5,6 +5,7 @@ from zenml.steps import BaseParameters, step
 from t2d_feature_generation.steps.flatten_from_specs import (
     FlattenFromParamsConf,
     flatten_from_specs,
+    flatten_with_age,
 )
 
 
@@ -19,6 +20,11 @@ def load_and_flatten_static_specs(
 ) -> pd.DataFrame:
     specs = [
         StaticSpec(
+            values_loader="sex_female",
+            input_col_name_override="sex_female",
+            prefix="pred",
+        ),
+        StaticSpec(
             values_loader="t2d",
             input_col_name_override="timestamp",
             output_col_name_override="timestamp_first_t2d_hba1c",
@@ -32,9 +38,10 @@ def load_and_flatten_static_specs(
         ),
     ]
 
-    flattened_df = flatten_from_specs(
+    flattened_df = flatten_with_age(
         specs=specs,
         prediction_times=prediction_times,
         flattening_conf=params.flattening_conf,
+        add_age=True,
     )
     return flattened_df
