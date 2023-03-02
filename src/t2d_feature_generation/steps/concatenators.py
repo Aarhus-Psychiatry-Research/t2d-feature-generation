@@ -47,6 +47,9 @@ def feature_concatenator(params: ConcatenatorParams) -> pd.DataFrame:
 
     dfs = [p.flattened_df for p in inputs]
 
+    if len(dfs) == 1:
+        return dfs[0]
+
     concatenated_df = validate_indeces_match_and_concat(dfs)
 
     return concatenated_df
