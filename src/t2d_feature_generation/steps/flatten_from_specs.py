@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import Union
 
 import pandas as pd
 import psutil
@@ -19,7 +19,7 @@ class FlattenFromParamsConf(BaseParameters):
 
 
 def flatten_from_specs(
-    specs: List[Union[StaticSpec, TemporalSpec]],
+    specs: list[Union[StaticSpec, TemporalSpec]],
     prediction_times: pd.DataFrame,
     flattening_conf: FlattenFromParamsConf,
 ):

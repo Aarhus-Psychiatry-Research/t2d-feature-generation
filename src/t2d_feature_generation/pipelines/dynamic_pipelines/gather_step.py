@@ -11,7 +11,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
 #  or implied. See the License for the specific language governing
 #  permissions and limitations under the License.
-from typing import List, Optional, Type, TypeVar
+from typing import Optional, TypeVar
 
 from zenml.environment import Environment
 from zenml.post_execution import get_run
@@ -30,7 +30,7 @@ class GatherStepsParameters(BaseParameters):
     """
 
     output_steps_prefix: Optional[str] = None
-    output_steps_names: Optional[List[str]] = None
+    output_steps_names: Optional[list[str]] = None
 
 
 class OutputParameters(BaseParameters):
@@ -44,7 +44,7 @@ class OutputParameters(BaseParameters):
     @staticmethod
     def gather_dictionaries(
         gather_steps_params: GatherStepsParameters,
-    ) -> List[dict]:
+    ) -> list[dict]:
         """Extract the output of steps compatible with the parameters of
         gather_steps_params.
         Args:
@@ -77,7 +77,7 @@ class OutputParameters(BaseParameters):
         ]
 
     @classmethod
-    def gather(cls: Type[OP], gather_steps_params: GatherStepsParameters) -> List[OP]:
+    def gather(cls: type[OP], gather_steps_params: GatherStepsParameters) -> list[OP]:
         """Extract the output of steps compatible with the parameters of
         gather_steps_params, and generates an instance of the concrete output
         class given by cls. The assumption is that the concrete class's
@@ -100,5 +100,5 @@ class OutputParameters(BaseParameters):
             concrete class.
         """
         return Output(
-            **{field_name: field.type_ for field_name, field in cls.__fields__.items()}
+            **{field_name: field.type_ for field_name, field in cls.__fields__.items()},
         )

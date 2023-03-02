@@ -1,4 +1,4 @@
-from typing import Any, List, Union
+from typing import Any, Union
 
 import pandas as pd
 from steps.flatten_from_specs import FlattenFromParamsConf, flatten_from_specs
@@ -7,12 +7,12 @@ from zenml.steps import BaseParameters, Output, step
 
 
 class OutcomeLoaderParams(BaseParameters):
-    values_loader: List[str]
-    lookahead_days: List[Union[int, float]]
-    resolve_multiple_fn: List[str]
-    fallback: List[Any]
-    incident: List[bool]
-    allowed_nan_value_prop: List[float]
+    values_loader: list[str]
+    lookahead_days: list[Union[int, float]]
+    resolve_multiple_fn: list[str]
+    fallback: list[Any]
+    incident: list[bool]
+    allowed_nan_value_prop: list[float]
     flattening_conf: FlattenFromParamsConf = FlattenFromParamsConf()
 
 
