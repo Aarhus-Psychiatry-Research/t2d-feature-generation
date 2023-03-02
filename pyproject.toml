@@ -79,7 +79,6 @@ good-names = "df,p,f,d,e,n,k,i,v"
 disable = "too-many-lines,line-too-long,missing-raises-doc,no-self-argument,unused-wildcard-import,wildcard-import,no-else-return,too-many-arguments,redefined-outer-name,c-extension-no-member,wrong-import-order,logging-fstring-interpolation,unused-import,deprecated-typing-alias,missing-module-docstring,missing-class-docstring,no-value-for-parameter,missing-function-docstring"
 ignore-paths = ['docs/*']
 
-
 [tool.semantic_release]
 branch = "main"
 version_variable = [
