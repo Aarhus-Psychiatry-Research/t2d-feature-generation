@@ -27,6 +27,7 @@ jobs:
 
       - name: Set up Python
         uses: actions/setup-python@v4
+        id: setup_python
         with:
           python-version: ${{ matrix.python-version }}
           cache: "pip"
@@ -37,7 +38,7 @@ jobs:
         with:
           path: |
             .venv
-          key: ${{ runner.os }}-${{ matrix.python-version }}-venv-${{ hashFiles('**/pyproject.toml') }}
+          key: ${{ runner.os }}-${{ steps.setup_python.python-version }}-venv-${{ hashFiles('**/pyproject.toml') }}
 
       - name: Install dependencies
         shell: bash
