@@ -43,8 +43,8 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
+          virtualenv .venv
           python -m pip install --upgrade pip
-          # Assumes the package have the tests extra
           pip install -e ".[tests]"
 
       - name: Run and write pytest
