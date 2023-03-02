@@ -1,7 +1,6 @@
 """Test cases for the main module."""
 import pandas as pd
 import pytest
-
 from t2d_feature_generation.steps.concatenators import validate_indeces_match_and_concat
 
 

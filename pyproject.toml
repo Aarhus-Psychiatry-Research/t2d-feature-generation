@@ -127,6 +127,7 @@ exclude = [
     "dist",
     "node_modules",
     "venv",
+    "__init__.py",
 ]
 
 # Allow unused variables when underscore-prefixed.
@@ -140,3 +141,4 @@ max-complexity = 10
 
 [tool.ruff.isort]
 known-third-party = ["wandb"]
+profile = "black"
