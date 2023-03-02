@@ -127,6 +127,8 @@ exclude = [
     "node_modules",
     "venv",
     "__init__.py",
+    "src/timeseriesflattener",
+    "src/psycop-feature-generation",
 ]
 
 # Allow unused variables when underscore-prefixed.
