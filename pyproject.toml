@@ -76,7 +76,7 @@ include-package-data = true
 [tool.pylint]
 load-plugins = "pylint.extensions.docparams,pylint.extensions.code_style,pylint.extensions.for_any_all,pylint.extensions.typing"
 good-names = "df,p,f,d,e,n,k,i,v"
-disable = "too-many-lines,line-too-long,missing-raises-doc,no-self-argument,unused-wildcard-import,wildcard-import,no-else-return,too-many-arguments,redefined-outer-name,c-extension-no-member,wrong-import-order,logging-fstring-interpolation,unused-import,deprecated-typing-alias,missing-module-docstring,missing-class-docstring,no-value-for-parameter,missing-function-docstring"
+disable = "too-many-lines,line-too-long,missing-raises-doc,no-self-argument,unused-wildcard-import,wildcard-import,no-else-return,too-many-arguments,redefined-outer-name,c-extension-no-member,wrong-import-order,logging-fstring-interpolation,unused-import,deprecated-typing-alias,missing-module-docstring,missing-class-docstring,no-value-for-parameter,missing-function-docstring,no-name-in-module"
 ignore-paths = ['docs/*']
 
 [tool.semantic_release]

@@ -1,14 +1,12 @@
 from typing import Any, Union
 
 import pandas as pd
+from timeseriesflattener.feature_spec_objects import OutcomeGroupSpec
 from zenml.steps import BaseParameters, Output, step
 
 from t2d_feature_generation.steps.flatten_from_specs import (
     FlattenFromParamsConf,
     flatten_from_specs,
-)
-from timeseriesflattener.feature_spec_objects import (
-    OutcomeGroupSpec,  # pylint: disable=no-name-in-module
 )
 
 
