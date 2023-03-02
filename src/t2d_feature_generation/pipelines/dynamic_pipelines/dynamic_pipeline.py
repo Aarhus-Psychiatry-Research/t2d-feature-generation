@@ -11,7 +11,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
 #  or implied. See the License for the specific language governing
 #  permissions and limitations under the License.
-from typing import Any, Type, TypeVar
+from typing import Any, TypeVar
 
 from zenml.pipelines import BasePipeline
 from zenml.steps import BaseStep
@@ -32,7 +32,7 @@ class DynamicPipeline(BasePipeline):
             *steps: the steps to be executed by this pipeline
             **kwargs: the configuration of this pipeline
         """
-        if type(self).STEP_SPEC != {}:
+        if {} != type(self).STEP_SPEC:
             raise RuntimeError(
                 f"A dynamic pipeline {self.__class__.__name__} was already "
                 f"initialized. Consider generating new pipelines based on "
@@ -43,12 +43,14 @@ class DynamicPipeline(BasePipeline):
         super().__init__(*steps, **kwargs)
 
     def connect(  # pylint: disable=useless-parent-delegation
-        self, *args: BaseStep, **kwargs: BaseStep
+        self,
+        *args: BaseStep,
+        **kwargs: BaseStep,
     ) -> None:
         super().connect(*args, **kwargs)
 
     @classmethod
-    def as_template_of(cls: Type[DP], pipeline_name: str, **kwargs: Any) -> Type[DP]:
+    def as_template_of(cls: type[DP], pipeline_name: str, **kwargs: Any) -> type[DP]:
         """
         Generates a new type of pipeline that directly inherits from the
         current dynamic pipeline. This is useful to create multiple dynamic

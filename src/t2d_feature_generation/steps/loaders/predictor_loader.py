@@ -1,4 +1,4 @@
-from typing import Any, List, Union
+from typing import Any, Union
 
 import pandas as pd
 from timeseriesflattener.feature_spec_objects import PredictorGroupSpec
@@ -15,11 +15,11 @@ from t2d_feature_generation.steps.flatten_from_specs import (
 
 class PredictorLoaderParams(BaseParameters):
     predictor_group_name: str
-    values_loader: List[str]
-    lookbehind_days: List[Union[int, float]]
-    resolve_multiple_fn: List[str]
-    fallback: List[Any]
-    allowed_nan_value_prop: List[float]
+    values_loader: list[str]
+    lookbehind_days: list[Union[int, float]]
+    resolve_multiple_fn: list[str]
+    fallback: list[Any]
+    allowed_nan_value_prop: list[float]
     flattening_conf: FlattenFromParamsConf = FlattenFromParamsConf()
     cache_version: str = "0.0.1"
 

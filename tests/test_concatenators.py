@@ -1,7 +1,6 @@
 """Test cases for the main module."""
 import pandas as pd
 import pytest
-
 from t2d_feature_generation.steps.concatenators import validate_indeces_match_and_concat
 
 
@@ -22,7 +21,7 @@ def test_validate_indeces_match_and_concat():
     df5 = pd.DataFrame({"A": [1, 2], "C": [7, 8]}, index=[1, 2])
 
     # Call the function with the test dataframes and check that it raises a ValueError
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="indices"):
         validate_indeces_match_and_concat([df4, df5])
 
     # Create test dataframes with different lengths
@@ -31,5 +30,5 @@ def test_validate_indeces_match_and_concat():
     df8 = pd.DataFrame({"A": [1, 2], "E": [9, 10]}, index=[0, 1])
 
     # Call the function with the test dataframes and check that it raises a ValueError
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="indices"):
         validate_indeces_match_and_concat([df6, df7, df8])

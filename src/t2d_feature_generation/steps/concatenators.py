@@ -1,5 +1,5 @@
 import logging
-from typing import Hashable, List, Sequence
+from collections.abc import Hashable, Sequence
 
 import pandas as pd
 from zenml.steps import step
@@ -19,7 +19,7 @@ class ConcatenatorParams(GatherStepsParameters):
 
 
 def validate_indeces_match_and_concat(
-    dfs: List[pd.DataFrame],
+    dfs: list[pd.DataFrame],
     shared_cols: Sequence[Hashable] = (
         "dw_ek_borger",
         "timestamp",

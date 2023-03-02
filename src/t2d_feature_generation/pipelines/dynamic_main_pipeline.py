@@ -1,13 +1,11 @@
 from itertools import chain
-from typing import List
 
-from zenml.steps import BaseParameters, BaseStep
+from zenml.steps import BaseStep
 
 from t2d_feature_generation.pipelines.dynamic_pipelines.dynamic_pipeline import (
     DynamicPipeline,
 )
 from t2d_feature_generation.steps.concatenators import ConcatenatorParams
-from t2d_feature_generation.steps.dataset_saver import dataset_saver
 from t2d_feature_generation.steps.loaders.predictor_loader import (
     PredictorLoaderParams,
     load_and_flatten_predictors,
@@ -22,13 +20,13 @@ class FeatureGeneration(DynamicPipeline):
         self,
         quarantine_df_loader: BaseStep,
         prediction_time_loader: BaseStep,
-        predictor_confs: List[PredictorLoaderParams],
+        predictor_confs: list[PredictorLoaderParams],
         predictor_concatenator: BaseStep,
         outcome_loader: BaseStep,
         static_loader: BaseStep,
         combined_concatenator: BaseStep,
         dataset_saver: BaseStep,
-        **kwargs
+        **kwargs,
     ) -> None:
         """
         Initialize the pipeline by creating the step instances used by it.
@@ -63,7 +61,7 @@ class FeatureGeneration(DynamicPipeline):
             self.combined_concatenator,
             self.dataset_saver,
             *chain.from_iterable(self.predictor_loading_steps),
-            **kwargs
+            **kwargs,
         )
 
     def connect(self, **kwargs: BaseStep) -> None:  # pylint: disable=arguments-differ

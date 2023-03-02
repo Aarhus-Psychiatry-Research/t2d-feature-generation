@@ -4,7 +4,6 @@ import logging
 from modules.get_predictor_params import get_predictor_params
 from psycop_feature_generation.application_modules.loggers import init_root_logger
 from psycop_feature_generation.application_modules.project_setup import get_project_info
-
 from t2d_feature_generation.pipelines.dynamic_main_pipeline import FeatureGeneration
 from t2d_feature_generation.steps.concatenators import (
     combined_concatenator,
@@ -18,9 +17,6 @@ from t2d_feature_generation.steps.loaders.outcome_loader import (
 from t2d_feature_generation.steps.loaders.prediction_times_loader import (
     PredTimeParams,
     prediction_times_loader,
-)
-from t2d_feature_generation.steps.loaders.predictor_loader import (
-    load_and_flatten_predictors,
 )
 from t2d_feature_generation.steps.loaders.quarantine_df_loader import (
     quarantine_df_loader,
