@@ -141,4 +141,3 @@ max-complexity = 10
 
 [tool.ruff.isort]
 known-third-party = ["wandb"]
-profile = "black"
