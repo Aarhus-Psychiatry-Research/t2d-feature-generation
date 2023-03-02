@@ -32,6 +32,13 @@ jobs:
           cache: "pip"
           cache-dependency-path: "**/pyproject.toml"
 
+      - name: Cache venv
+        uses: actions/cache@v2
+        with:
+          path: |
+            .venv
+          key: ${{ runner.os }}-venv-${{ hashFiles('**/pyproject.toml') }}
+
       - name: Install dependencies
         shell: bash
         run: |
