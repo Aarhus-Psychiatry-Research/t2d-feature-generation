@@ -45,7 +45,7 @@ def main():
         feature_specs=feature_specs,
         prediction_times_df=physical_visits_to_psychiatry(
             timestamps_only=True,
-            timestamp_for_output="end",
+            timestamp_for_output="start",
         ),
         drop_pred_times_with_insufficient_look_distance=False,
         project_info=project_info,
