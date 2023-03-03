@@ -1,7 +1,6 @@
 from psycop_feature_generation.loaders.raw.load_visits import (
     physical_visits_to_psychiatry,
 )
-
 from ydata_profiling import ProfileReport
 
 if __name__ == "__main__":

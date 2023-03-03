@@ -1,24 +1,19 @@
 """Main feature generation."""
+import logging
+
+import numpy as np
 from psycop_feature_generation.application_modules.flatten_dataset import (
     create_flattened_dataset,
 )
-from psycop_feature_generation.application_modules.project_setup import (
-    get_project_info,
-)
+from psycop_feature_generation.application_modules.project_setup import get_project_info
 from psycop_feature_generation.loaders.raw.load_moves import (
     load_move_into_rm_for_exclusion,
 )
 from psycop_feature_generation.loaders.raw.load_visits import (
     physical_visits_to_psychiatry,
 )
-import numpy as np
-import logging
 
-import numpy as np
-
-from timeseriesflattener.feature_spec_objects import (
-    PredictorSpec,
-)
+from timeseriesflattener.feature_spec_objects import PredictorSpec
 
 log = logging.getLogger()
 
@@ -38,7 +33,7 @@ def main():
             resolve_multiple_fn="count",
             allowed_nan_value_prop=0.0,
             prefix="eval",
-        )
+        ),
     ]
 
     flattened_df = create_flattened_dataset(
