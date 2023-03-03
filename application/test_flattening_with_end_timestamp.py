@@ -25,7 +25,7 @@ def main():
     """Main function for loading, generating and evaluating a flattened
     dataset."""
     project_info = get_project_info(
-        project_name="t2d",
+        project_name="fjidaopfj9das8fjhosda",
     )
 
     init_root_logger(project_info=project_info)
