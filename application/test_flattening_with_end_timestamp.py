@@ -30,10 +30,16 @@ def main():
 
     init_root_logger(project_info=project_info)
 
-    feature_specs = FeatureSpecifier(
-        project_info=project_info,
-        min_set_for_debug=True,
-    ).get_feature_specs()
+    feature_specs = [
+        PredictorSpec(
+            values_loader="hba1c",
+            fallback=np.nan,
+            lookbehind_days=9999,
+            resolve_multiple_fn="count",
+            allowed_nan_value_prop=0.0,
+            prefix=project_info.prefix.eval,
+        ),
+    ]
 
     flattened_df = create_flattened_dataset(
         feature_specs=feature_specs,

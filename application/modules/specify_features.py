@@ -53,6 +53,18 @@ class FeatureSpecifier:
         """Get metadata specs."""
         log.info("–––––––– Generating metadata specs ––––––––")
 
+        if self.min_set_for_debug:
+            return [
+                PredictorSpec(
+                    values_loader="hba1c",
+                    fallback=np.nan,
+                    lookbehind_days=9999,
+                    resolve_multiple_fn="count",
+                    allowed_nan_value_prop=0.0,
+                    prefix=self.project_info.prefix.eval,
+                ),
+            ]
+
         return [
             StaticSpec(
                 values_loader="t2d",
