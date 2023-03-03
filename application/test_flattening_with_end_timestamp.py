@@ -54,8 +54,7 @@ def main():
     )
 
     prop_na = (
-        len(flattened_df["eval_hba1c_within_9999_days_count_fallback_nan"].isna())
-        / flattened_df.shape[0]
+        flattened_df["eval_hba1c_within_9999_days_count_fallback_nan"].isna().mean()
     )
     prop_na_for_display = round(prop_na, 2)
 
