@@ -13,6 +13,7 @@ from psycop_feature_generation.loaders.raw.load_visits import (
     physical_visits_to_psychiatry,
 )
 
+from psycop_feature_generation.application_modules.loggers import init_root_logger
 from timeseriesflattener.feature_spec_objects import PredictorSpec
 
 from modules.specify_features import FeatureSpecifier
@@ -26,6 +27,8 @@ def main():
     project_info = get_project_info(
         project_name="t2d",
     )
+
+    init_root_logger(project_info=project_info)
 
     feature_specs = FeatureSpecifier(
         project_info=project_info,

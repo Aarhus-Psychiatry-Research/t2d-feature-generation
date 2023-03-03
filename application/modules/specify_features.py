@@ -53,16 +53,6 @@ class FeatureSpecifier:
         """Get metadata specs."""
         log.info("–––––––– Generating metadata specs ––––––––")
 
-        if self.min_set_for_debug:
-            return [
-                StaticSpec(
-                    values_loader="timestamp_exclusion",
-                    input_col_name_override="timestamp",
-                    output_col_name_override="timestamp_exclusion",
-                    prefix="",
-                ),
-            ]
-
         return [
             StaticSpec(
                 values_loader="t2d",
