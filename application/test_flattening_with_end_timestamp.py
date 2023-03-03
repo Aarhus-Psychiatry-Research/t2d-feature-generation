@@ -15,6 +15,8 @@ from psycop_feature_generation.loaders.raw.load_visits import (
 
 from timeseriesflattener.feature_spec_objects import PredictorSpec
 
+from modules.specify_features import FeatureSpecifier
+
 log = logging.getLogger()
 
 
@@ -22,19 +24,13 @@ def main():
     """Main function for loading, generating and evaluating a flattened
     dataset."""
     project_info = get_project_info(
-        project_name="t2d-testing",
+        project_name="t2d",
     )
 
-    feature_specs = [
-        PredictorSpec(
-            values_loader="hba1c",
-            fallback=np.nan,
-            lookbehind_days=9999,
-            resolve_multiple_fn="count",
-            allowed_nan_value_prop=0.0,
-            prefix="eval",
-        ),
-    ]
+    feature_specs = FeatureSpecifier(
+        project_info=project_info,
+        min_set_for_debug=True,
+    ).get_feature_specs()
 
     flattened_df = create_flattened_dataset(
         feature_specs=feature_specs,
@@ -51,7 +47,8 @@ def main():
     prop_na = (
         flattened_df["eval_hba1c_within_9999_days_count_fallback_nan"].isna().mean()
     )
-    prop_na_for_display = round(prop_na, 2)
+
+    prop_na_for_display = round(prop_na, 5)
 
     print(prop_na_for_display)
 

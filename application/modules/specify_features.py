@@ -90,19 +90,6 @@ class FeatureSpecifier:
         """Get outcome specs."""
         log.info("–––––––– Generating outcome specs ––––––––")
 
-        if self.min_set_for_debug:
-            return [
-                OutcomeSpec(
-                    values_loader="t2d",
-                    lookahead_days=365,
-                    resolve_multiple_fn="max",
-                    fallback=0,
-                    incident=True,
-                    allowed_nan_value_prop=0,
-                    prefix=self.project_info.prefix.outcome,
-                )
-            ]
-
         return OutcomeGroupSpec(
             values_loader=["t2d"],
             lookahead_days=[year * 365 for year in (1, 2, 3, 4, 5)],
@@ -288,7 +275,6 @@ class FeatureSpecifier:
 
         if self.min_set_for_debug:
             log.warn("––– !!! Using the minimum set of features for debugging !!! –––")
-            return self._get_temporal_predictor_specs() + self._get_outcome_specs() + self._get_metadata_specs()
 
         return (
             self._get_temporal_predictor_specs()
