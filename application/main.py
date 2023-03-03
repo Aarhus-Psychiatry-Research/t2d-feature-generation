@@ -27,8 +27,6 @@ from psycop_feature_generation.loaders.raw.load_visits import (
     physical_visits_to_psychiatry,
 )
 
-import wandb
-
 log = logging.getLogger()
 
 
@@ -75,7 +73,9 @@ if __name__ == "__main__":
 
     init_root_logger(project_info=project_info)
 
-    log.info(f"Stdout level is {logging.getLevelName(log.level)}")
+    log.info(  # pylint: disable=logging-fstring-interpolation
+        f"Stdout level is {logging.getLevelName(log.level)}",
+    )
     log.debug("Debugging is still captured in the log file")
 
     # Use wandb to keep track of your dataset generations
