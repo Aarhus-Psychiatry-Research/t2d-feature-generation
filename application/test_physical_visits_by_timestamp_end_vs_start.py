@@ -18,5 +18,3 @@ if __name__ == "__main__":
     for ds_type in ("start", "end"):
         start_profile = ProfileReport(datasets[ds_type])
         output = start_profile.to_file(f"{ds_type}.html")
-
-    pass
