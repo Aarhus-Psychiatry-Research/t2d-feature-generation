@@ -38,7 +38,7 @@ dev = [
     "pylint",
     "black==23.1.0",
     "pre-commit==3.1.1",
-    "mypy==0.991"
+    "mypy==1.1.1"
 ]
 
 tests = [
