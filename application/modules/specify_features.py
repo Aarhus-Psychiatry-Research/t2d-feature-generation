@@ -1,13 +1,11 @@
 """Feature specification module."""
 import logging
-from sys import prefix
 
 import numpy as np
 from psycop_feature_generation.application_modules.project_setup import ProjectInfo
 from psycop_feature_generation.loaders.raw.load_t2d_outcomes import (  # noqa pylint: disable=unused-import
     t2d,
 )
-
 from timeseriesflattener.feature_spec_objects import (
     BaseModel,
     OutcomeGroupSpec,
@@ -35,6 +33,8 @@ class SpecSet(BaseModel):
 
 
 class FeatureSpecifier:
+    """Feature specification class."""
+
     def __init__(self, project_info: ProjectInfo, min_set_for_debug: bool = False):
         self.min_set_for_debug = min_set_for_debug
         self.project_info = project_info
@@ -100,7 +100,7 @@ class FeatureSpecifier:
                     incident=True,
                     allowed_nan_value_prop=0,
                     prefix=self.project_info.prefix.outcome,
-                )
+                ),
             ]
 
         return OutcomeGroupSpec(
@@ -114,7 +114,10 @@ class FeatureSpecifier:
         ).create_combinations()
 
     def _get_medication_specs(
-        self, resolve_multiple, interval_days, allowed_nan_value_prop
+        self,
+        resolve_multiple,
+        interval_days,
+        allowed_nan_value_prop,
     ):
         """Get medication specs."""
         log.info("–––––––– Generating medication specs ––––––––")
@@ -157,7 +160,10 @@ class FeatureSpecifier:
         return psychiatric_medications + lifestyle_medications
 
     def _get_diagnoses_specs(
-        self, resolve_multiple, interval_days, allowed_nan_value_prop
+        self,
+        resolve_multiple,
+        interval_days,
+        allowed_nan_value_prop,
     ):
         """Get diagnoses specs."""
         log.info("–––––––– Generating diagnoses specs ––––––––")
@@ -198,7 +204,10 @@ class FeatureSpecifier:
         return lifestyle_diagnoses + psychiatric_diagnoses
 
     def _get_lab_result_specs(
-        self, resolve_multiple, interval_days, allowed_nan_value_prop
+        self,
+        resolve_multiple,
+        interval_days,
+        allowed_nan_value_prop,
     ):
         """Get lab result specs."""
         log.info("–––––––– Generating lab result specs ––––––––")
@@ -247,7 +256,7 @@ class FeatureSpecifier:
                     fallback=np.nan,
                     allowed_nan_value_prop=0,
                     prefix=self.project_info.prefix.predictor,
-                )
+                ),
             ]
 
         resolve_multiple = ["max", "min", "mean", "latest"]
@@ -287,8 +296,14 @@ class FeatureSpecifier:
         """Get a spec set."""
 
         if self.min_set_for_debug:
-            log.warn("––– !!! Using the minimum set of features for debugging !!! –––")
-            return self._get_temporal_predictor_specs() + self._get_outcome_specs() + self._get_metadata_specs()
+            log.warning(
+                "––– !!! Using the minimum set of features for debugging !!! –––",
+            )
+            return (
+                self._get_temporal_predictor_specs()
+                + self._get_outcome_specs()
+                + self._get_metadata_specs()
+            )
 
         return (
             self._get_temporal_predictor_specs()

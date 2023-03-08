@@ -18,10 +18,8 @@ classifiers = [
 
 requires-python = ">=3.8"
 dependencies = [
-        "timeseriesflattener @ git+https://github.com/Aarhus-Psychiatry-Research/timeseriesflattener.git#egg=timeseriesflattener",
-        "psycop-feature-generation @ git+https://github.com/Aarhus-Psychiatry-Research/psycop-feature-generation.git#egg=psycop-feature-generation",
-
-
+    "timeseriesflattener @ git+https://github.com/Aarhus-Psychiatry-Research/timeseriesflattener.git#egg=timeseriesflattener",
+    "psycop-feature-generation @ git+https://github.com/Aarhus-Psychiatry-Research/psycop-feature-generation.git#egg=psycop-feature-generation",
 ]
 
 [project.license]

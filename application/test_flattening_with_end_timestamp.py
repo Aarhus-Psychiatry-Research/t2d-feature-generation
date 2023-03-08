@@ -12,7 +12,6 @@ from psycop_feature_generation.loaders.raw.load_moves import (
 from psycop_feature_generation.loaders.raw.load_visits import (
     physical_visits_to_psychiatry,
 )
-
 from timeseriesflattener.feature_spec_objects import PredictorSpec
 
 log = logging.getLogger()
@@ -54,8 +53,6 @@ def main():
     prop_na_for_display = round(prop_na, 2)
 
     print(prop_na_for_display)
-
-    pass
 
 
 if __name__ == "__main__":

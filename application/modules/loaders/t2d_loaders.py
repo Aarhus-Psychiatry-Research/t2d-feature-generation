@@ -1,7 +1,6 @@
 """Loaders that are specific to the T2D project."""
-from psycopmlutils.sql.loader import sql_load
-
 from psycop_feature_generation.utils import data_loaders
+from psycopmlutils.sql.loader import sql_load
 
 
 @data_loaders.register("timestamp_exclusion")
