@@ -1,6 +1,6 @@
 import pandas as pd
 from psycop_feature_generation.loaders.raw.load_lab_results import (
-    fasting_glc,
+    fasting_p_glc,
     hba1c,
     ogtt,
     unscheduled_p_glc,
@@ -27,7 +27,9 @@ def get_unscheduled_p_glc_above_threshold():
 
 
 def get_fasting_glc_above_threshold():
-    return get_rows_above_value(df=fasting_glc(), value=7.0, value_type="fasting_glc")
+    return get_rows_above_value(
+        df=fasting_p_glc(), value=7.0, value_type="fasting_p_glc"
+    )
 
 
 def get_ogtt_above_threshold():
