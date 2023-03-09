@@ -2,7 +2,6 @@
 
 import logging
 
-from t2d_feature_generation.specify_features import FeatureSpecifier
 from psycop_feature_generation.application_modules.describe_flattened_dataset import (
     save_flattened_dataset_description_to_disk,
 )
@@ -26,6 +25,7 @@ from psycop_feature_generation.loaders.raw.load_moves import (
 from psycop_feature_generation.loaders.raw.load_visits import (
     physical_visits_to_psychiatry,
 )
+from t2d_feature_generation.specify_features import FeatureSpecifier
 
 log = logging.getLogger()
 
