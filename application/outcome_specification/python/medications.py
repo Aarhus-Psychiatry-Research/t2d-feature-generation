@@ -1,7 +1,6 @@
 from psycop_feature_generation.loaders.raw.load_medications import (
     load as load_medications,
 )
-from psycop_feature_generation.loaders.raw.utils import load_from_codes
 
 
 def get_antidiabetic_medications():
