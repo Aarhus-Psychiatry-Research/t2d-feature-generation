@@ -1,0 +1,1 @@
+-e git+https://github.com/Aarhus-Psychiatry-Research/psycop-feature-generation.git#egg=psycop_feature_generation
