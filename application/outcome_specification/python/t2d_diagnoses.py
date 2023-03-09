@@ -11,7 +11,7 @@ def get_first_type_2_diabetes_diagnosis():
         .reset_index(drop=False)
     )
 
-    return df_first_t2d_diag
+    return df_first_t2d_diag[["dw_ek_borger", "timestamp"]]
 
 
 if __name__ == "__main__":

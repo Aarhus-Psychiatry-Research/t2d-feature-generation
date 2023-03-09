@@ -65,10 +65,10 @@ def get_first_diabetes_lab_result_above_threshold():
         .reset_index(drop=False)
     )
 
-    return first_lab_result_above_threshold
+    return first_lab_result_above_threshold[["dw_ek_borger", "timestamp"]]
 
 
 if __name__ == "__main__":
-    get_first_diabetes_lab_result_above_threshold()
+    df = get_first_diabetes_lab_result_above_threshold()
 
     pass

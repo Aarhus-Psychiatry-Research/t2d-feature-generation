@@ -25,7 +25,7 @@ def get_first_antidiabetic_medication():
         .reset_index(drop=False)
     )
 
-    return df_first_antidiabetic_medication
+    return df_first_antidiabetic_medication[["dw_ek_borger", "timestamp"]]
 
 
 if __name__ == "__main__":
