@@ -1,8 +1,8 @@
+import pandas as pd
+from lab_results import get_first_diabetes_lab_result_above_threshold
 from medications import get_first_antidiabetic_medication
 from t1d_diagnoses import get_first_type_1_diabetes_diagnosis
 from t2d_diagnoses import get_first_type_2_diabetes_diagnosis
-from lab_results import get_first_diabetes_lab_result_above_threshold
-import pandas as pd
 
 
 def get_first_diabetes_indicator():
