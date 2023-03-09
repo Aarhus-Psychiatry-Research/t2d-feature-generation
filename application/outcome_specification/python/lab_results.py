@@ -15,7 +15,7 @@ def get_rows_above_value(value: float, df: pd.DataFrame, value_type: str):
 
 
 def get_hba1cs_above_threshold():
-    return get_rows_above_value(df=hba1c(), value=48.0, value_type="hba1c")
+    return get_rows_above_value(df=hba1c(), value=47.9, value_type="hba1c")
 
 
 def get_unscheduled_p_glc_above_threshold():
@@ -64,10 +64,11 @@ def get_first_diabetes_lab_result_above_threshold():
         .first()
         .reset_index(drop=False)
     )
-    
+
     return first_lab_result_above_threshold
 
+
 if __name__ == "__main__":
-    get_first_diabetes_lab_result_above_threshold(get_diabetes_lab_results_above_threshold)
+    get_first_diabetes_lab_result_above_threshold()
 
     pass
