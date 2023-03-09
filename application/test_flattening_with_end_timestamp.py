@@ -61,8 +61,6 @@ def main():
 
     print(prop_na_for_display)
 
-    pass
-
 
 if __name__ == "__main__":
     main()
