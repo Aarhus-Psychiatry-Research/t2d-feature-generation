@@ -220,6 +220,8 @@ class FeatureSpecifier:
                 "triglycerides",
                 "fasting_ldl",
                 "crp",
+                "arterial_p_glc",
+                "urinary_glc",
             ),
             resolve_multiple_fn=resolve_multiple,
             lookbehind_days=interval_days,
