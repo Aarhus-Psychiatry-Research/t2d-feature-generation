@@ -72,5 +72,3 @@ def get_first_diabetes_lab_result_above_threshold():
 
 if __name__ == "__main__":
     df = get_first_diabetes_lab_result_above_threshold()
-
-    pass

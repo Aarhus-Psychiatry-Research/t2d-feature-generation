@@ -1,8 +1,16 @@
 import pandas as pd
-from t2d_feature_generation.outcome_specification.lab_results import get_first_diabetes_lab_result_above_threshold
-from t2d_feature_generation.outcome_specification.medications import get_first_antidiabetic_medication
-from t2d_feature_generation.outcome_specification.t1d_diagnoses import get_first_type_1_diabetes_diagnosis
-from t2d_feature_generation.outcome_specification.t2d_diagnoses import get_first_type_2_diabetes_diagnosis
+from t2d_feature_generation.outcome_specification.lab_results import (
+    get_first_diabetes_lab_result_above_threshold,
+)
+from t2d_feature_generation.outcome_specification.medications import (
+    get_first_antidiabetic_medication,
+)
+from t2d_feature_generation.outcome_specification.t1d_diagnoses import (
+    get_first_type_1_diabetes_diagnosis,
+)
+from t2d_feature_generation.outcome_specification.t2d_diagnoses import (
+    get_first_type_2_diabetes_diagnosis,
+)
 from timeseriesflattener.utils import data_loaders
 
 
@@ -35,5 +43,3 @@ def get_first_diabetes_indicator():
 
 if __name__ == "__main__":
     df = get_first_diabetes_indicator()
-
-    pass
