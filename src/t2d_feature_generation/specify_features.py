@@ -16,7 +16,7 @@ from timeseriesflattener.feature_spec_objects import (
     _AnySpec,
 )
 
-from .loaders.t2d_loaders import (  # noqa pylint: disable=unused-import
+from ...application.modules.loaders.t2d_loaders import (  # noqa pylint: disable=unused-import
     timestamp_exclusion,
 )
 
