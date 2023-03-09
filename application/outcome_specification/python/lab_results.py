@@ -26,16 +26,16 @@ def get_unscheduled_p_glc_above_threshold():
     )
 
 
+def get_ogtt_above_threshold():
+    return get_rows_above_value(df=ogtt(), value=11.0, value_type="ogtt")
+
+
 def get_fasting_glc_above_threshold():
     return get_rows_above_value(
         df=fasting_p_glc(),
         value=7.0,
         value_type="fasting_p_glc",
     )
-
-
-def get_ogtt_above_threshold():
-    return get_rows_above_value(df=ogtt(), value=11.0, value_type="ogtt")
 
 
 def get_diabetes_lab_results_above_threshold():
