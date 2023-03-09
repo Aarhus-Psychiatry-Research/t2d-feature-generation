@@ -39,12 +39,17 @@ def get_fasting_glc_above_threshold():
 
 
 def get_diabetes_lab_results_above_threshold():
+    hba1cs = get_hba1cs_above_threshold()
+    unscheduled_p_glc = get_unscheduled_p_glc_above_threshold()
+    fasting_glc = get_fasting_glc_above_threshold()
+    ogtt = get_ogtt_above_threshold()
+
     return pd.concat(
         [
-            get_hba1cs_above_threshold(),
-            get_unscheduled_p_glc_above_threshold(),
-            get_fasting_glc_above_threshold(),
-            get_ogtt_above_threshold(),
+            hba1cs,
+            unscheduled_p_glc,
+            fasting_glc,
+            ogtt,
         ],
         axis=0,
     )
