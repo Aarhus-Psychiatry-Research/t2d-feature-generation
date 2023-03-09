@@ -1,10 +1,12 @@
 import pandas as pd
-from lab_results import get_first_diabetes_lab_result_above_threshold
-from medications import get_first_antidiabetic_medication
-from t1d_diagnoses import get_first_type_1_diabetes_diagnosis
-from t2d_diagnoses import get_first_type_2_diabetes_diagnosis
+from t2d_feature_generation.outcome_specification.lab_results import get_first_diabetes_lab_result_above_threshold
+from t2d_feature_generation.outcome_specification.medications import get_first_antidiabetic_medication
+from t2d_feature_generation.outcome_specification.t1d_diagnoses import get_first_type_1_diabetes_diagnosis
+from t2d_feature_generation.outcome_specification.t2d_diagnoses import get_first_type_2_diabetes_diagnosis
+from timeseriesflattener.utils import data_loaders
 
 
+@data_loaders.register("first_diabetes_indicator")
 def get_first_diabetes_indicator():
     t1d_diagnoses = get_first_type_1_diabetes_diagnosis()
     t2d_diagnoses = get_first_type_2_diabetes_diagnosis()

@@ -5,6 +5,7 @@ from psycop_feature_generation.loaders.raw.load_lab_results import (
     ogtt,
     unscheduled_p_glc,
 )
+from timeseriesflattener.utils import data_loaders
 
 
 def get_rows_above_value(value: float, df: pd.DataFrame, value_type: str):
@@ -55,6 +56,7 @@ def get_diabetes_lab_results_above_threshold():
     )
 
 
+@data_loaders.register("first_diabetes_lab_result")
 def get_first_diabetes_lab_result_above_threshold():
     df = get_diabetes_lab_results_above_threshold()
 
