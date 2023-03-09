@@ -2,7 +2,7 @@
 
 import logging
 
-from modules.specify_features import FeatureSpecifier
+from t2d_feature_generation.specify_features import FeatureSpecifier
 from psycop_feature_generation.application_modules.describe_flattened_dataset import (
     save_flattened_dataset_description_to_disk,
 )
