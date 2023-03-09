@@ -164,5 +164,4 @@ poetry.lock
 
 # PyCharm
 /.idea/*
-src/**
 .Rproj.user
