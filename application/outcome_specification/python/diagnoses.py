@@ -16,7 +16,7 @@ def get_hba1cs_above_threshold():
 
 def get_unscheduled_p_glc_above_threshold():
     return get_rows_above_value(
-        df=unscheduled_p_glc(), value=11.0, value_type="unscheduled_p_glc"
+        df=unscheduled_p_glc(), value=11.0, value_type="unscheduled_p_glc",
     )
 
 
