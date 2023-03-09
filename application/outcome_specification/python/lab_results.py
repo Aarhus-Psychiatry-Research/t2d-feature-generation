@@ -51,4 +51,6 @@ def get_diabetes_lab_results_above_threshold():
 
 
 if __name__ == "__main__":
+    df = get_diabetes_lab_results_above_threshold()
+
     pass
