@@ -5,6 +5,7 @@ import numpy as np
 from psycop_feature_generation.application_modules.flatten_dataset import (
     create_flattened_dataset,
 )
+from psycop_feature_generation.application_modules.loggers import init_root_logger
 from psycop_feature_generation.application_modules.project_setup import get_project_info
 from psycop_feature_generation.loaders.raw.load_moves import (
     load_move_into_rm_for_exclusion,
@@ -12,11 +13,7 @@ from psycop_feature_generation.loaders.raw.load_moves import (
 from psycop_feature_generation.loaders.raw.load_visits import (
     physical_visits_to_psychiatry,
 )
-
-from psycop_feature_generation.application_modules.loggers import init_root_logger
 from timeseriesflattener.feature_spec_objects import PredictorSpec
-
-from modules.specify_features import FeatureSpecifier
 
 log = logging.getLogger()
 
