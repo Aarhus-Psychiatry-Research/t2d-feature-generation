@@ -55,7 +55,19 @@ def get_diabetes_lab_results_above_threshold():
     )
 
 
-if __name__ == "__main__":
+def get_first_diabetes_lab_result_above_threshold():
     df = get_diabetes_lab_results_above_threshold()
+
+    first_lab_result_above_threshold = (
+        df.sort_values("timestamp")
+        .groupby("dw_ek_borger")
+        .first()
+        .reset_index(drop=False)
+    )
+    
+    return first_lab_result_above_threshold
+
+if __name__ == "__main__":
+    get_first_diabetes_lab_result_above_threshold(get_diabetes_lab_results_above_threshold)
 
     pass
