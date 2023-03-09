@@ -38,7 +38,8 @@ def get_first_diabetes_indicator():
         .reset_index(drop=False)
     )
 
-    return first_diabetes_indicator[["dw_ek_borger", "timestamp"]]
+    first_diabetes_indicator["value"] = 1
+    return first_diabetes_indicator[["dw_ek_borger", "timestamp", "value"]]
 
 
 if __name__ == "__main__":
