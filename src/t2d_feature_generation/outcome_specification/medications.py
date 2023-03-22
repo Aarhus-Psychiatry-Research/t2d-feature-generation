@@ -1,9 +1,10 @@
+import pandas as pd
 from psycop_feature_generation.loaders.raw.load_medications import (
     load as load_medications,
 )
 
 
-def get_antidiabetic_medications():
+def get_antidiabetic_medications() -> pd.DataFrame:
     df = load_medications(
         atc_code="A10",
         load_prescribed=True,
@@ -14,7 +15,7 @@ def get_antidiabetic_medications():
     return df
 
 
-def get_first_antidiabetic_medication():
+def get_first_antidiabetic_medication() -> pd.DataFrame:
     df = get_antidiabetic_medications()
 
     # Group by person id and sort by timestamp, then get the first row for each person

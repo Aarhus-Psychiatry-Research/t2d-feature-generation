@@ -1,7 +1,8 @@
+import pandas as pd
 from psycop_feature_generation.loaders.raw.load_diagnoses import type_1_diabetes
 
 
-def get_first_type_1_diabetes_diagnosis():
+def get_first_type_1_diabetes_diagnosis() -> pd.DataFrame:
     df = type_1_diabetes()
 
     df_first_t1d_diag = (
