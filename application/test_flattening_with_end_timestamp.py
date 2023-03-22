@@ -5,6 +5,7 @@ import numpy as np
 from psycop_feature_generation.application_modules.flatten_dataset import (
     create_flattened_dataset,
 )
+from psycop_feature_generation.application_modules.loggers import init_root_logger
 from psycop_feature_generation.application_modules.project_setup import get_project_info
 from psycop_feature_generation.loaders.raw.load_moves import (
     load_move_into_rm_for_exclusion,
@@ -21,8 +22,10 @@ def main():
     """Main function for loading, generating and evaluating a flattened
     dataset."""
     project_info = get_project_info(
-        project_name="t2d-testing",
+        project_name="fjidaopfj9das8fjhosda",
     )
+
+    init_root_logger(project_info=project_info)
 
     feature_specs = [
         PredictorSpec(
@@ -31,7 +34,7 @@ def main():
             lookbehind_days=9999,
             resolve_multiple_fn="count",
             allowed_nan_value_prop=0.0,
-            prefix="eval",
+            prefix=project_info.prefix.eval,
         ),
     ]
 
@@ -39,7 +42,7 @@ def main():
         feature_specs=feature_specs,
         prediction_times_df=physical_visits_to_psychiatry(
             timestamps_only=True,
-            timestamp_for_output="end",
+            timestamp_for_output="start",
         ),
         drop_pred_times_with_insufficient_look_distance=False,
         project_info=project_info,
@@ -50,7 +53,8 @@ def main():
     prop_na = (
         flattened_df["eval_hba1c_within_9999_days_count_fallback_nan"].isna().mean()
     )
-    prop_na_for_display = round(prop_na, 2)
+
+    prop_na_for_display = round(prop_na, 5)
 
     print(prop_na_for_display)
 
