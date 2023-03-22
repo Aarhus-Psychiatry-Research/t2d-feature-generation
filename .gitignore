@@ -164,5 +164,6 @@ poetry.lock
 
 # PyCharm
 /.idea/*
-src/**
 .Rproj.user
+src/psycop-feature-generation/
+src/t2d_feature_generation/utils_for_testing.py

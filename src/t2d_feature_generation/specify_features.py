@@ -3,9 +3,6 @@ import logging
 
 import numpy as np
 from psycop_feature_generation.application_modules.project_setup import ProjectInfo
-from psycop_feature_generation.loaders.raw.load_t2d_outcomes import (  # noqa pylint: disable=unused-import
-    t2d,
-)
 from timeseriesflattener.feature_spec_objects import (
     BaseModel,
     OutcomeGroupSpec,
@@ -16,8 +13,11 @@ from timeseriesflattener.feature_spec_objects import (
     _AnySpec,
 )
 
-from .loaders.t2d_loaders import (  # noqa pylint: disable=unused-import
-    timestamp_exclusion,
+from t2d_feature_generation.outcome_specification.combined import (  # noqa pylint: disable=unused-import
+    get_first_diabetes_indicator,
+)
+from t2d_feature_generation.outcome_specification.lab_results import (  # noqa pylint: disable=unused-import
+    get_first_diabetes_lab_result_above_threshold,
 )
 
 log = logging.getLogger(__name__)
@@ -55,27 +55,25 @@ class FeatureSpecifier:
 
         if self.min_set_for_debug:
             return [
-                PredictorSpec(
-                    values_loader="hba1c",
-                    fallback=np.nan,
-                    lookbehind_days=9999,
-                    resolve_multiple_fn="count",
-                    allowed_nan_value_prop=0.0,
-                    prefix=self.project_info.prefix.eval,
+                StaticSpec(
+                    values_loader="first_diabetes_indicator",
+                    input_col_name_override="timestamp",
+                    output_col_name_override="first_diabetes_indicator",
+                    prefix="",
                 ),
             ]
 
         return [
             StaticSpec(
-                values_loader="t2d",
+                values_loader="first_diabetes_lab_result",
                 input_col_name_override="timestamp",
-                output_col_name_override="timestamp_first_t2d_hba1c",
+                output_col_name_override="timestamp_first_diabetes_lab_result",
                 prefix="",
             ),
             StaticSpec(
-                values_loader="timestamp_exclusion",
+                values_loader="first_diabetes_indicator",
                 input_col_name_override="timestamp",
-                output_col_name_override="timestamp_exclusion",
+                output_col_name_override="first_diabetes_indicator",
                 prefix="",
             ),
             PredictorSpec(
@@ -95,7 +93,7 @@ class FeatureSpecifier:
         if self.min_set_for_debug:
             return [
                 OutcomeSpec(
-                    values_loader="t2d",
+                    values_loader="first_diabetes_lab_result",
                     lookahead_days=365,
                     resolve_multiple_fn="max",
                     fallback=0,
@@ -106,7 +104,7 @@ class FeatureSpecifier:
             ]
 
         return OutcomeGroupSpec(
-            values_loader=["t2d"],
+            values_loader=["first_diabetes_lab_result"],
             lookahead_days=[year * 365 for year in (1, 2, 3, 4, 5)],
             resolve_multiple_fn=["max"],
             fallback=[0],
@@ -222,6 +220,8 @@ class FeatureSpecifier:
                 "triglycerides",
                 "fasting_ldl",
                 "crp",
+                "arterial_p_glc",
+                "urinary_glc",
             ),
             resolve_multiple_fn=resolve_multiple,
             lookbehind_days=interval_days,
@@ -234,6 +234,8 @@ class FeatureSpecifier:
                 "hba1c",
                 "scheduled_glc",
                 "unscheduled_p_glc",
+                "ogtt",
+                "fasting_p_glc",
                 "egfr",
                 "albumine_creatinine_ratio",
             ),
@@ -262,7 +264,7 @@ class FeatureSpecifier:
             ]
 
         resolve_multiple = ["max", "min", "mean", "latest"]
-        interval_days = [30, 90, 180, 365, 730]
+        interval_days = [30, 180, 365, 730, 1095, 1460, 1825]
         allowed_nan_value_prop = [0]
 
         lab_results = self._get_lab_result_specs(

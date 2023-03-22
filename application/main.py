@@ -2,7 +2,6 @@
 
 import logging
 
-from modules.specify_features import FeatureSpecifier
 from psycop_feature_generation.application_modules.describe_flattened_dataset import (
     save_flattened_dataset_description_to_disk,
 )
@@ -26,6 +25,7 @@ from psycop_feature_generation.loaders.raw.load_moves import (
 from psycop_feature_generation.loaders.raw.load_visits import (
     physical_visits_to_psychiatry,
 )
+from t2d_feature_generation.specify_features import FeatureSpecifier
 
 log = logging.getLogger()
 
@@ -43,7 +43,7 @@ def main():
         feature_specs=feature_specs,
         prediction_times_df=physical_visits_to_psychiatry(
             timestamps_only=True,
-            timestamp_for_output="end",
+            timestamp_for_output="start",
         ),
         drop_pred_times_with_insufficient_look_distance=False,
         project_info=project_info,
