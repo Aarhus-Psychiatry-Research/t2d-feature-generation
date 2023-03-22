@@ -1,5 +1,6 @@
 """Feature specification module."""
 import logging
+from typing import Sequence  # noqa
 
 import numpy as np
 from psycop_feature_generation.application_modules.project_setup import ProjectInfo
@@ -13,10 +14,10 @@ from timeseriesflattener.feature_spec_objects import (
     _AnySpec,
 )
 
-from t2d_feature_generation.outcome_specification.combined import (  # noqa pylint: disable=unused-import
+from t2d_feature_generation.outcome_specification.combined import (  # noqa noqa: RUF100
     get_first_diabetes_indicator,
 )
-from t2d_feature_generation.outcome_specification.lab_results import (  # noqa pylint: disable=unused-import
+from t2d_feature_generation.outcome_specification.lab_results import (  # noqa noqa: RUF100
     get_first_diabetes_lab_result_above_threshold,
 )
 
@@ -43,7 +44,7 @@ class FeatureSpecifier:
         self.min_set_for_debug = min_set_for_debug
         self.project_info = project_info
 
-    def _get_static_predictor_specs(self):
+    def _get_static_predictor_specs(self) -> list[StaticSpec]:
         """Get static predictor specs."""
         return [
             StaticSpec(
@@ -90,7 +91,7 @@ class FeatureSpecifier:
             ),
         ]
 
-    def _get_outcome_specs(self):
+    def _get_outcome_specs(self) -> list[OutcomeSpec]:
         """Get outcome specs."""
         log.info("-------- Generating outcome specs --------")
 
@@ -119,10 +120,10 @@ class FeatureSpecifier:
 
     def _get_medication_specs(
         self,
-        resolve_multiple,
-        interval_days,
-        allowed_nan_value_prop,
-    ):
+        resolve_multiple: Sequence[str],
+        interval_days: Sequence[int],
+        allowed_nan_value_prop: Sequence[float],
+    ) -> list[PredictorSpec]:
         """Get medication specs."""
         log.info("-------- Generating medication specs --------")
 
@@ -165,10 +166,10 @@ class FeatureSpecifier:
 
     def _get_diagnoses_specs(
         self,
-        resolve_multiple,
-        interval_days,
-        allowed_nan_value_prop,
-    ):
+        resolve_multiple: Sequence[str],
+        interval_days: Sequence[int],
+        allowed_nan_value_prop: Sequence[float],
+    ) -> list[PredictorSpec]:
         """Get diagnoses specs."""
         log.info("-------- Generating diagnoses specs --------")
 
@@ -209,10 +210,10 @@ class FeatureSpecifier:
 
     def _get_lab_result_specs(
         self,
-        resolve_multiple,
-        interval_days,
-        allowed_nan_value_prop,
-    ):
+        resolve_multiple: Sequence[str],
+        interval_days: Sequence[int],
+        allowed_nan_value_prop: Sequence[float],
+    ) -> list[PredictorSpec]:
         """Get lab result specs."""
         log.info("-------- Generating lab result specs --------")
 
