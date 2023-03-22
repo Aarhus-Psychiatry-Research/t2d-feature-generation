@@ -264,7 +264,7 @@ class FeatureSpecifier:
             ]
 
         resolve_multiple = ["max", "min", "mean", "latest"]
-        interval_days = [30, 180, 730]
+        interval_days = [30, 180, 365, 730, 1095, 1460, 1825]
         allowed_nan_value_prop = [0]
 
         lab_results = self._get_lab_result_specs(
