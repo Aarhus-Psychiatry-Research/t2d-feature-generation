@@ -35,7 +35,11 @@ class SpecSet(BaseModel):
 class FeatureSpecifier:
     """Feature specification class."""
 
-    def __init__(self, project_info: ProjectInfo, min_set_for_debug: bool = False) -> None:
+    def __init__(
+        self,
+        project_info: ProjectInfo,
+        min_set_for_debug: bool = False,
+    ) -> None:
         self.min_set_for_debug = min_set_for_debug
         self.project_info = project_info
 
