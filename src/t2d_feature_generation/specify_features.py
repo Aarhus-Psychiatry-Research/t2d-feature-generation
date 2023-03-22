@@ -35,7 +35,7 @@ class SpecSet(BaseModel):
 class FeatureSpecifier:
     """Feature specification class."""
 
-    def __init__(self, project_info: ProjectInfo, min_set_for_debug: bool = False):
+    def __init__(self, project_info: ProjectInfo, min_set_for_debug: bool = False) -> None:
         self.min_set_for_debug = min_set_for_debug
         self.project_info = project_info
 
@@ -51,7 +51,7 @@ class FeatureSpecifier:
 
     def _get_metadata_specs(self) -> list[_AnySpec]:
         """Get metadata specs."""
-        log.info("–––––––– Generating metadata specs ––––––––")
+        log.info("-------- Generating metadata specs --------")
 
         if self.min_set_for_debug:
             return [
@@ -88,7 +88,7 @@ class FeatureSpecifier:
 
     def _get_outcome_specs(self):
         """Get outcome specs."""
-        log.info("–––––––– Generating outcome specs ––––––––")
+        log.info("-------- Generating outcome specs --------")
 
         if self.min_set_for_debug:
             return [
@@ -120,7 +120,7 @@ class FeatureSpecifier:
         allowed_nan_value_prop,
     ):
         """Get medication specs."""
-        log.info("–––––––– Generating medication specs ––––––––")
+        log.info("-------- Generating medication specs --------")
 
         psychiatric_medications = PredictorGroupSpec(
             values_loader=(
@@ -166,7 +166,7 @@ class FeatureSpecifier:
         allowed_nan_value_prop,
     ):
         """Get diagnoses specs."""
-        log.info("–––––––– Generating diagnoses specs ––––––––")
+        log.info("-------- Generating diagnoses specs --------")
 
         lifestyle_diagnoses = PredictorGroupSpec(
             values_loader=(
@@ -210,7 +210,7 @@ class FeatureSpecifier:
         allowed_nan_value_prop,
     ):
         """Get lab result specs."""
-        log.info("–––––––– Generating lab result specs ––––––––")
+        log.info("-------- Generating lab result specs --------")
 
         general_lab_results = PredictorGroupSpec(
             values_loader=(
@@ -249,7 +249,7 @@ class FeatureSpecifier:
 
     def _get_temporal_predictor_specs(self) -> list[PredictorSpec]:
         """Generate predictor spec list."""
-        log.info("–––––––– Generating temporal predictor specs ––––––––")
+        log.info("-------- Generating temporal predictor specs --------")
 
         if self.min_set_for_debug:
             return [
@@ -301,7 +301,7 @@ class FeatureSpecifier:
 
         if self.min_set_for_debug:
             log.warning(
-                "––– !!! Using the minimum set of features for debugging !!! –––",
+                "--- !!! Using the minimum set of features for debugging !!! ---",
             )
             return (
                 self._get_temporal_predictor_specs()
