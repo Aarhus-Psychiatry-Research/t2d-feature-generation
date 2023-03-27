@@ -34,7 +34,7 @@ dev = [
   "ruff",
   "pylint",
   "black==23.1.0",
-  "pre-commit==3.2.0",
+  "pre-commit==3.2.1",
   "mypy==1.1.1"
 ]
 tests = [
