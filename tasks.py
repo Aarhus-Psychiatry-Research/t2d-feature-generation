@@ -243,3 +243,29 @@ def test(c: Context):
             for line in Path("tests/.pytest_results").read_text().splitlines()
             if line.startswith("FAILED")
         ]
+
+        for line in failed_tests:
+            # Remove from start of line until /test_
+            line_sans_prefix = line[line.find("test_") :]
+
+            # Keep only that after ::
+            line_sans_suffix = line_sans_prefix[line_sans_prefix.find("::") + 2 :]
+            print(f"FAILED {Emo.FAIL} #{line_sans_suffix}     ")
+
+    if "failed" in test_result.stdout or "error" in test_result.stdout:
+        exit(0)
+
+
+@task
+def lint(c: Context):
+    pre_commit(c)
+    mypy(c)
+
+
+@task
+def pr(c: Context):
+    add_and_commit(c)
+    lint(c)
+    test(c)
+    update_branch(c)
+    update_pr(c)
