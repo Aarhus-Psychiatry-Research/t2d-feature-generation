@@ -1,5 +1,5 @@
 """Main feature generation."""
-#%%
+# %%
 import logging
 from pathlib import Path
 
