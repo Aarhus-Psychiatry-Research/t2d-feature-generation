@@ -1,8 +1,0 @@
-diff a/.cookiecutter.json b/.cookiecutter.json	(rejected hunks)
-@@ -11,6 +12,5 @@
-     "license": "MIT",
-     "package_name": "t2d_feature_generation",
-     "project_name": "t2d-feature-generation",
--    "setup_for_dev_bash_script": "y",
-     "version": "0.0.0"
- }
