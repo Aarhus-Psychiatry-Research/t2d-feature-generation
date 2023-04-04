@@ -54,7 +54,7 @@ def str_to_df(
 
     if convert_str_to_float:
         # Convert all str to float
-        df = df.apply(pd.to_numeric, axis=0, errors="coerce") # type: ignore
+        df = df.apply(pd.to_numeric, axis=0, errors="coerce")  # type: ignore
 
     # Drop "Unnamed" cols
     return df.loc[:, ~df.columns.str.contains("^Unnamed")]
