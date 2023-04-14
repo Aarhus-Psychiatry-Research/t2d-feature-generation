@@ -16,18 +16,19 @@ from timeseriesflattener.utils import data_loaders
 
 @data_loaders.register("first_diabetes_indicator")
 def get_first_diabetes_indicator() -> pd.DataFrame:
-    t1d_diagnoses = get_first_type_1_diabetes_diagnosis()
-    t2d_diagnoses = get_first_type_2_diabetes_diagnosis()
-    medications = get_first_antidiabetic_medication()
-    lab_results = get_first_diabetes_lab_result_above_threshold()
+    dfs = {
+        "t1d_diagnoses": get_first_type_1_diabetes_diagnosis(),
+        "t2d_diagnoses": get_first_type_2_diabetes_diagnosis(),
+        "medications": get_first_antidiabetic_medication(),
+        "lab_results": get_first_diabetes_lab_result_above_threshold(),
+    }
+
+    # Add a source column to each of the dfs
+    for df_type in dfs:
+        dfs[df_type]["source"] = df_type
 
     combined = pd.concat(
-        [
-            t1d_diagnoses,
-            t2d_diagnoses,
-            medications,
-            lab_results,
-        ],
+        [dfs[k] for k in dfs],
         axis=0,
     )
 
@@ -39,7 +40,7 @@ def get_first_diabetes_indicator() -> pd.DataFrame:
     )
 
     first_diabetes_indicator["value"] = 1
-    return first_diabetes_indicator[["dw_ek_borger", "timestamp", "value"]]
+    return first_diabetes_indicator[["dw_ek_borger", "timestamp", "value", "source"]]
 
 
 if __name__ == "__main__":
