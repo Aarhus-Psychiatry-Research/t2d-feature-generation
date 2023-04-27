@@ -12,7 +12,8 @@ min_date = datetime(year=2013, month=1, day=1)
 
 # %%
 all_prediction_times = physical_visits_to_psychiatry(
-    timestamps_only=True, timestamp_for_output="start",
+    timestamps_only=True,
+    timestamp_for_output="start",
 )
 
 # %%
@@ -40,7 +41,9 @@ indicator_before_min_date = first_diabetes_indicator[
 
 # %%
 prediction_times_from_patients_with_diabetes = prediction_times_after_min_date.merge(
-    indicator_before_min_date, how="inner", on="dw_ek_borger",
+    indicator_before_min_date,
+    how="inner",
+    on="dw_ek_borger",
 )
 
 # %% Summarised
@@ -52,7 +55,9 @@ print(prediction_times_from_patients_with_diabetes.shape[0])
 # No prevalent diabetes #
 #########################
 with_indicator = prediction_times_after_min_date.merge(
-    right=indicator_before_min_date, how="left", on="dw_ek_borger",
+    right=indicator_before_min_date,
+    how="left",
+    on="dw_ek_borger",
 )
 no_prevalent_diabetes = with_indicator[with_indicator["source"].isna()][
     ["dw_ek_borger", "timestamp_x"]
@@ -133,10 +138,13 @@ cols_for_outcome_determination = flattened_dataset[
     [outcome_col_name, "dw_ek_borger", "timestamp"]
 ]
 not_within_two_years_from_move = not_within_two_years_from_move.rename(
-    {"timestamp_contact": "timestamp"}, axis=1,
+    {"timestamp_contact": "timestamp"},
+    axis=1,
 )[["dw_ek_borger", "timestamp"]]
 combined = not_within_two_years_from_move.merge(
-    cols_for_outcome_determination, on=["dw_ek_borger", "timestamp"], how="left",
+    cols_for_outcome_determination,
+    on=["dw_ek_borger", "timestamp"],
+    how="left",
 )
 
 combined.groupby(outcome_col_name).count()
