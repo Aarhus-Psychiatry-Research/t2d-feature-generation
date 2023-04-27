@@ -12,7 +12,7 @@ min_date = datetime(year=2013, month=1, day=1)
 
 # %%
 all_prediction_times = physical_visits_to_psychiatry(
-    timestamps_only=True, timestamp_for_output="start"
+    timestamps_only=True, timestamp_for_output="start",
 )
 
 # %%
@@ -40,7 +40,7 @@ indicator_before_min_date = first_diabetes_indicator[
 
 # %%
 prediction_times_from_patients_with_diabetes = prediction_times_after_min_date.merge(
-    indicator_before_min_date, how="inner", on="dw_ek_borger"
+    indicator_before_min_date, how="inner", on="dw_ek_borger",
 )
 
 # %% Summarised
@@ -52,7 +52,7 @@ print(prediction_times_from_patients_with_diabetes.shape[0])
 # No prevalent diabetes #
 #########################
 with_indicator = prediction_times_after_min_date.merge(
-    right=indicator_before_min_date, how="left", on="dw_ek_borger"
+    right=indicator_before_min_date, how="left", on="dw_ek_borger",
 )
 no_prevalent_diabetes = with_indicator[with_indicator["source"].isna()][
     ["dw_ek_borger", "timestamp_x"]
@@ -80,7 +80,7 @@ after_incident_diabetes = (
 not_after_incident_diabetes = contacts_with_hba1c[~after_incident_diabetes]
 
 print(
-    f"Visits after incident diabetes: {no_prevalent_diabetes.shape[0] - not_after_incident_diabetes.shape[0]}"
+    f"Visits after incident diabetes: {no_prevalent_diabetes.shape[0] - not_after_incident_diabetes.shape[0]}",
 )
 print(f"Remaining: {not_after_incident_diabetes.shape[0]}")
 # %%
@@ -102,7 +102,7 @@ not_within_two_years_from_move = PredictionTimeFilterer(
     timestamp_col_name="timestamp_contact",
 ).run_filter()
 print(
-    f"Within 2 years from move: {not_after_incident_diabetes.shape[0] - not_within_two_years_from_move.shape[0]}"
+    f"Within 2 years from move: {not_after_incident_diabetes.shape[0] - not_within_two_years_from_move.shape[0]}",
 )
 print(f"Remaining: {not_within_two_years_from_move.shape[0]}")
 
@@ -115,7 +115,7 @@ from pathlib import Path
 import pandas as pd
 
 dir_path = Path(
-    "E:/shared_resources/t2d/feature_sets/psycop_t2d_adminmanber_features_2023_03_22_15_14/"
+    "E:/shared_resources/t2d/feature_sets/psycop_t2d_adminmanber_features_2023_03_22_15_14/",
 )
 paths = [
     list(dir_path.glob(f"*{split}*.parquet"))[0] for split in ["train", "test", "val"]
@@ -133,10 +133,10 @@ cols_for_outcome_determination = flattened_dataset[
     [outcome_col_name, "dw_ek_borger", "timestamp"]
 ]
 not_within_two_years_from_move = not_within_two_years_from_move.rename(
-    {"timestamp_contact": "timestamp"}, axis=1
+    {"timestamp_contact": "timestamp"}, axis=1,
 )[["dw_ek_borger", "timestamp"]]
 combined = not_within_two_years_from_move.merge(
-    cols_for_outcome_determination, on=["dw_ek_borger", "timestamp"], how="left"
+    cols_for_outcome_determination, on=["dw_ek_borger", "timestamp"], how="left",
 )
 
 combined.groupby(outcome_col_name).count()
