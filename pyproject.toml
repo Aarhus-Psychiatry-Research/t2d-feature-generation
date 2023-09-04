@@ -33,7 +33,7 @@ dev = [
   "cruft",
   "ruff",
   "mypy",
-  "pre-commit==3.3.2",
+  "pre-commit==3.4.0",
   "black==22.8.0",
   "black[jupyter]==22.8.0",
   "pandas-stubs"
